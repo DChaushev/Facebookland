@@ -55,7 +55,7 @@ class Game:
 
             # Redraw the background
             screen.fill(BG_COLOR)
-            bg = textureHolder.get(Texture.BG_ICE)
+            bg = textureHolder.get(Texture.BACKGROUND)
 
             x = 0
             while x < SCREEN_WIDTH:
