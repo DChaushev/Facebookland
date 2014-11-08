@@ -4,10 +4,12 @@ FACEBOOK_INFO_SERVER_ADDRESS = ""
 
 from random import random
 import json
+from Game.Global import *
 
 class Person:
-    def __init__( self, name ):
-        self.name = name;
+    def __init__( self, aName, aData ):
+        self.name = aName
+        self.data = aData
 
     def name(self):
         return self.name
@@ -18,6 +20,21 @@ class Level:
         self.city = cities[ int( data[ 0 ] ) % len( cities ) ]
         self.enemiesDifficulty = int( data[ 1 ] ) % 5
         self.enemiesCount =  int( data[ 2 ] ) * 4
+        self.enumTexture = backgrounds_list[ int( data[ 3 ] ) % len ( backgrounds_list ) ]
+
+    @staticmethod
+    def LevelDifficultyToString( difficulty ):
+        if ( difficulty == 0 ):
+            return "Easy"
+        elif ( difficulty == 1 ):
+            return "Medium"
+        elif ( difficulty == 2 ):
+            return "Hard"
+        elif ( difficulty == 3 ):
+            return "Extreme"
+        else:
+            return "Impossible"
+
 
 def testLevelParsing ():
 
