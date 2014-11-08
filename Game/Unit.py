@@ -8,7 +8,7 @@ class Unit(Entity):
         Entity.__init__(self, (x, y), texture_holder, id)
         self.walk = []
         self.speed = 1
-        self.health = 10
+        self.health = 100
         self.direction = Vector2(0,0)
         self.animation_count = 0
         self.animation_count_max = 30

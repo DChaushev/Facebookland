@@ -9,6 +9,7 @@ import sys
 
 from Game.Global import textureHolder, Texture
 from Game.Player import Player
+from Game.Enemy import Enemy
 
 def exit_game():
     sys.exit()
@@ -16,13 +17,13 @@ def exit_game():
 class Game:
     def __init__(self):
         self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
-        self.monsters = []
+        self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
         self.projectiles = []
         #self.environment = []
 
     def run(self):
         pygame.init()
-        screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
+        screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
         clock = pygame.time.Clock()
         while True:
             # Limit frame speed to 50 FPS
@@ -55,7 +56,7 @@ class Game:
 
             # Redraw the background
             screen.fill(BG_COLOR)
-            bg = textureHolder.get(Texture.BG_ICE)
+            bg = textureHolder.get(Texture.BG_LAVA)
 
             x = 0
             while x < SCREEN_WIDTH:
@@ -72,6 +73,7 @@ class Game:
             self.player.render(screen)
 
             for monster in self.monsters:
+                monster.set_target(self.player)
                 monster.update()
                 monster.render(screen)
 
