@@ -7,11 +7,11 @@ if ( __name__== '__main__'):
 
 if ( Common.USE_PYQT ):
     from PyQt4.QtCore import QModelIndex
-    from PyQt4.QtGui import QWidget
+    from PyQt4.QtGui import QWidget, QPixmap
     from PyQt4.QtGui import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QListView, QLabel, QListWidget
     from PyQt4.QtGui import QListWidgetItem, QFormLayout
 else:
-    from PySide.QtGui import QWidget
+    from PySide.QtGui import QWidget, QPixmap
     from PySide.QtGui import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QListView, QLabel, QListWidget
     from PySide.QtGui import QListWidgetItem, QFormLayout
 
@@ -41,7 +41,7 @@ class MainWidget( QWidget ):
         self.levelNameLabel       = QLabel()
         self.levelDifficultyLabel = QLabel()
         self.numberOfEnemiesLabel = QLabel()
-        self.backGroundTexture    = QLabel()
+        self.backgroundTexture    = QLabel()
 
         self.logWithFacebookButton = QPushButton( "Log With Facebook ")
         self.logWithFacebookButton.clicked.connect( self.onLogButtonClicked)
@@ -50,9 +50,9 @@ class MainWidget( QWidget ):
         self.launchButton.clicked.connect( self.onLaunchButtonClicked )
 
         formLayout.addRow( QLabel( "Level Name"       ), self.levelNameLabel )
-        formLayout.addRow( QLabel( "Level Difficulty" ), self.levelNameLabel )
-        formLayout.addRow( QLabel( "Enemies"          ), self.levelNameLabel )
-        formLayout.addRow( QLabel( "World"            ), self.levelNameLabel )
+        formLayout.addRow( QLabel( "Level Difficulty" ), self.levelDifficultyLabel )
+        formLayout.addRow( QLabel( "Enemies"          ), self.numberOfEnemiesLabel )
+        formLayout.addRow( QLabel( "World"            ), self.backgroundTexture )
         formLayout.addRow( self.logWithFacebookButton  , self.launchButton   )
         subLayout.addLayout( formLayout, 1 )
 
@@ -74,6 +74,8 @@ class MainWidget( QWidget ):
         row = self.peopleView.row( item )
         self.selectedPerson = self.people[ row ]
         print ( "{0} is selected".format( self.selectedPerson.name ) )
+        self.levelOptions = Common.Level( self.selectedPerson.data )
+        self.updateFormFromSelectedUser()
 
     def onLaunchButtonClicked( self ):
         self.gameInstance.run()
@@ -82,3 +84,13 @@ class MainWidget( QWidget ):
     def onLogButtonClicked(self):
         people = self.requestWorker.request()
         self.setPeople( people )
+
+    def updateFormFromSelectedUser(self):
+        self.levelDifficultyLabel.setText( Common.Level.LevelDifficultyToString( self.levelOptions.enemiesDifficulty ) )
+        self.levelNameLabel.setText( self.levelOptions.city )
+        self.numberOfEnemiesLabel.setText( str( self.levelOptions.enemiesCount ) )
+
+        pix = QPixmap( self.levelOptions.enumTexture.value )
+
+        self.backgroundTexture.setStyleSheet("border-image:url(:/2.png);");
+        self.backgroundTexture.setPixmap( pix.scaled( 150, 150 ) );
