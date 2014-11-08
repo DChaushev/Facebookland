@@ -21,6 +21,9 @@ class Background(Enum):
 
 backgrounds_list = []
 
+for bg in Background:
+        backgrounds_list.append(bg)
+
 #use single instance of Texture Holder
 textureHolder = TextureHolder()
 
