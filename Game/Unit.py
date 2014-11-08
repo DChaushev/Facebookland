@@ -51,7 +51,9 @@ class Unit(Entity):
             screen.blit(transform.rotate(self.walk[animation_index], angle), self.pos)
         else:
             angle = self.last_vector.angle_to((0, -1))
-            screen.blit(transform.rotate(self.idle_animation, angle), self.pos)
+            if self.idle_animation != None:
+               screen.blit(transform.rotate(self.idle_animation, angle), self.pos)
+
 
 
     def generate_animations(self):

@@ -5,6 +5,7 @@ from Game.TextureHolder import TextureHolder
 class Texture(Enum):
     PLAYER = 'Game/Resources/textures/Units/hero.png'
     ZOMBIE = 'Game/Resources/textures/Units/zombie.png'
+    BULLET = 'Game/Resources/textures/Misc/bullet.png'
     BACKGROUND = 'SELECTED DOWN'
 
 class Background(Enum):

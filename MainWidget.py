@@ -78,7 +78,7 @@ class MainWidget( QWidget ):
         self.updateFormFromSelectedUser()
 
     def onLaunchButtonClicked( self ):
-        self.gameInstance.run()
+        self.gameInstance.run( self.levelOptions )
         print ( "Launch Button Clicked" )
 
     def onLogButtonClicked(self):

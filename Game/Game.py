@@ -18,12 +18,13 @@ class Game:
     def __init__(self):
         self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
+        self.arrows = []
         self.projectiles = []
         #self.tree = Unit()
         #self.air = [Unit()]
         #self.environment = []
 
-    def run(self):
+    def run(self, levelOptions):
         pygame.init()
         screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
         clock = pygame.time.Clock()
@@ -46,7 +47,7 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         exit_game()
                     if event.key == pygame.K_SPACE:
-                        self.player.Shoot_arrow()
+                        self.arrows.append( self.player.Shoot_arrow() )
                         
                 elif event.type == pygame.KEYUP:
                     if event.key in (pygame.K_UP, pygame.K_w):
@@ -60,7 +61,8 @@ class Game:
 
             # Redraw the background
             screen.fill(BG_COLOR)
-            bg = textureHolder.get(Texture.BACKGROUND)
+            textureHolder.load(levelOptions.enumTexture, levelOptions.enumTexture.value)
+            bg = textureHolder.get(levelOptions.enumTexture)
 
             x = 0
             while x < SCREEN_WIDTH:
@@ -84,6 +86,10 @@ class Game:
             for projectile in self.projectiles:
                 projectile.update()
                 projectile.render(screen)
+
+            for arrow in self.arrows:
+                arrow.update()
+                arrow.render( screen )
 
             #for cloud in self.air:
             #    cloud.update()
