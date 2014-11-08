@@ -52,7 +52,7 @@ class MainWidget( QWidget ):
         formLayout.addRow( QLabel( "Level Difficulty" ), self.levelNameLabel )
         formLayout.addRow( QLabel( "Enemies"          ), self.levelNameLabel )
         formLayout.addRow( QLabel( "World"            ), self.levelNameLabel )
-        formLayout.addRow( self.launchButton           , None )
+        formLayout.addRow( self.logWithFacebookButton  , self.launchButton   )
         subLayout.addLayout( formLayout, 1 )
 
         mainLayout.addLayout( subLayout )
