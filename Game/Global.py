@@ -31,4 +31,4 @@ for texture in Texture:
     if not texture == Texture.BACKGROUND:
         textureHolder.load(texture, texture.value)
 
-textureHolder.load(Texture.BACKGROUND, Background.BLUEROCK.value)
+textureHolder.load( Texture.BACKGROUND, Background.BLUEROCK.value)

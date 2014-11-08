@@ -18,7 +18,6 @@ class Game:
         self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
         self.monsters = []
         self.projectiles = []
-        #self.environment = []
 
     def run(self):
         pygame.init()
@@ -42,7 +41,9 @@ class Game:
                         self.player.add_direction((1, 0))
                     if event.key == pygame.K_ESCAPE:
                         exit_game()
-
+                    if event.key == pygame.K_SPACE:
+                        self.player.Shoot_arrow()
+                        
                 elif event.type == pygame.KEYUP:
                     if event.key in (pygame.K_UP, pygame.K_w):
                         self.player.add_direction((0, 1))
