@@ -8,6 +8,7 @@ class Entity:
         self.pos.x = x
         self.pos.y = y
         self.texture = texture_holder.get(id)
+        self.dont_walk = []
 
     def __init__(self, vector, texture_holder, id):
         self.pos = vector
@@ -22,3 +23,8 @@ class Entity:
 
     def set_texture(self, texture_holder, id):
         self.texture = texture_holder.get(id)
+
+    def update(self):
+
+     def render(self):
+        '''stationary render'''
