@@ -21,7 +21,7 @@ class Game:
         self.projectiles = []
         #self.environment = []
 
-    def run(self):
+    def run(self, levelOptions):
         pygame.init()
         screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
         clock = pygame.time.Clock()
@@ -58,7 +58,8 @@ class Game:
 
             # Redraw the background
             screen.fill(BG_COLOR)
-            bg = textureHolder.get(Texture.BACKGROUND)
+            textureHolder.load(levelOptions.enumTexture, levelOptions.enumTexture.value)
+            bg = textureHolder.get(levelOptions.enumTexture)
 
             x = 0
             while x < SCREEN_WIDTH:
