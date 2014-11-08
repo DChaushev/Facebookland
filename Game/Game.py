@@ -5,9 +5,9 @@ class Game:
 
     def __init__(self):
         self.time_per_frame = 1 / 60
-        #self._window = Window()
-        #self._world = World(_window)
-        #self._player = Player()
+        self._window = Window() # from library
+        self._world = World(self._window) # from library
+        self._player = Player() # desc of Unit
 
     def run(self):
         elapsed_time = time.time()
@@ -23,7 +23,7 @@ class Game:
 
     def _process_input(self):
         commands = self._world.get_command_queue()
-        event = 0
+        event = 0 # from library
         while self._window.poll_event(event):
             self._player.handle_event(event, commands)
             if event.type == "Closed":
@@ -38,9 +38,3 @@ class Game:
         self._world.draw()
         self._window.set_view(self._window.get_default_view())
         self._window.display()
-
-
-
-
-
-
