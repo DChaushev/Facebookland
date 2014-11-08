@@ -8,6 +8,7 @@ import math
 class Player(Unit):
      def __init__(self, x, y, texture_holder, id):
         Unit.__init__(self, x, y, texture_holder, id)
+        self.load_animations()
 
      def Shoot_arrow(self):
         pass
@@ -15,12 +16,12 @@ class Player(Unit):
      def load_animations(self):
          x = 0
          for i in range(3):
-            #self.walk_up.append(self.texture)#pygame.transform.chop(self.texture, (x, 0, 100, 150)))
             sheet = self.texture
             sheet.set_clip(pygame.Rect(x, 0, 100, 150))
             draw_me = sheet.subsurface(sheet.get_clip())
             draw_me = pygame.transform.scale(draw_me, (50, 75))
-            self.walk_up.append(draw_me)
-            #self.walk_down.append(pygame.transform.flip(draw_me, True, True))
+            self.walk.append(draw_me)
             x += 130
-         self.animation_count_max *= len(self.walk_up)-1
+         self.walk.append(self.walk[1])
+         #self.animation_count_max = (len(self.walk) - 1)
+         self.idle_animation = self.walk[1]

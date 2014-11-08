@@ -6,26 +6,22 @@ from pygame import transform
 class Unit(Entity):
     def __init__(self, x, y, texture_holder, id):
         Entity.__init__(self, (x, y), texture_holder, id)
-        self.walk_up = []
-        self.walk_down = []
-        self.walk_left = []
-        self.walk_right = []
-        self.speed = 1
+        self.walk = []
+        self.speed = 3
         self.health = 10
         self.direction = Vector2(0,0)
         self.animation_count = 0
-        self.animation_count_max = 20
-
-
+        self.animation_count_max = 30
+        self.last_vector = Vector2(0, -1)
 
     def get_sprite(self, texture_id):
         pass
 
     def add_direction(self, dir):
-        self.direction += dir
-        print(self.direction.angle_to((0, -1)))
+        self.set_direction(self.direction + dir)
 
     def set_direction(self, dir):
+        self.last_vector = self.direction
         self.direction = dir
 
     def reduce_health(self):
@@ -46,35 +42,16 @@ class Unit(Entity):
         else:
             self.animation_count += 1
 
-        screen.blit(transform.rotate(self.walk_up[int(self.animation_count/20)], self.direction.angle_to((0, -1))), self.pos)
+        angle = 0
+        if not self.direction.x == 0 or not self.direction.y == 0:
+            angle = self.direction.angle_to((0, -1))
+            animation_index = int(int((self.animation_count * len(self.walk)) - 1)/self.animation_count_max)
+            print(animation_index)
 
-        # if self.direction.x<0 and self.direction.y<0:
-        #     """ up-left animation"""
-        #     return
-        # if(self.direction.x<0 and self.direction.y>0):
-        #     """ down-left animation"""
-        #     return
-        # if(self.direction.x>0 and self.direction.y<0):
-        #     """ up-right animation"""
-        #     return
-        # if(self.direction.x>0 and self.direction.y>0):
-        #     """ down-right animation"""
-        #     return
-        # if(self.direction.x<0):
-        #     """ left animation"""
-        #     return
-        # if(self.direction.x>0):
-        #     """ right animation"""
-        #     return
-        # if(self.direction.y<0):
-        #     """ up animation"""
-        #     return
-        # if(self.direction.y>0):
-        #     """ down animation"""
-        #     return
-        # if (self.direction.x == 0 and self.direction.y == 0):
-        #     Entity.render(screen)
-
+            screen.blit(transform.rotate(self.walk[animation_index], angle), self.pos)
+        else:
+            angle = self.last_vector.angle_to((0, -1))
+            screen.blit(transform.rotate(self.idle_animation, angle), self.pos)
 
 
     def generate_animations(self):
