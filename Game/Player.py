@@ -4,6 +4,7 @@ from Game.Unit import Unit
 from Game.Arrow import Arrow
 import pygame
 import math
+from Game.Global import Texture, textureHolder
 
 class Player(Unit):
      def __init__(self, x, y, texture_holder, id):
@@ -11,8 +12,17 @@ class Player(Unit):
         self.load_animations()
         self.speed = 3
 
-     def Shoot_arrow(self):
-        pass
+     def Shoot_arrow( self ):
+        arrow = Arrow( self.pos.x, self.pos.y, textureHolder, Texture.BULLET )
+        if ( self.direction == pygame.math.Vector2( 0, 0 ) ):
+            arrow.set_direction( self.last_vector )
+        else:
+            arrow.set_direction( self.direction )
+
+        arrow.set_speed( 15 )
+
+        return arrow
+
 
      def load_animations(self):
          x = 0
