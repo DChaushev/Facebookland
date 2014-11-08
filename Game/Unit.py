@@ -1,16 +1,16 @@
-from Game import TextureHolder
 from Game.Direction import *
+from pygame import math
 
 class Unit:
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
+    def __init__(self, x, y, type):
+        self.pos = math.Vector2(x, y)
         self.walk_up = []
         self.walk_down = []
         self.walk_left = []
         self.walk_right = []
+        self.textureID = type
+        self.speed = 1
 
     def get_sprite(self, texture_id):
         pass
@@ -20,9 +20,9 @@ class Unit:
 
     def move(self, direction):
         if direction == Direction.LEFT:
-            self.x -= self.speed
+            self.pos.x -= self.speed
         if direction == Direction.RIGHT:
-            self.x += self.speed
+            self.pos.x += self.speed
         if direction == Direction.UP:
             self.y -= self.speed
         if direction == Direction.DOWN:
@@ -32,3 +32,5 @@ class Unit:
         #TODO
         pass
 
+    def get_textureID(self):
+        return self.textureID
