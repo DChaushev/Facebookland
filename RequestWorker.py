@@ -3,7 +3,7 @@ __author__ = 'Admin'
 from PyQt4.QtCore import pyqtSignal
 
 import json
-import urllib
+from urllib.request import urlopen
 
 class RequestWorker:
     def __init__( self, serverPath ):
@@ -13,6 +13,6 @@ class RequestWorker:
         ready = pyqtSignal()
 
     def request(self):
-        self.data = json.load( urllib.urlopen( self.serverPath ) )
+        self.data = json.load( urlopen( self.serverPath ) )
         #TODO: parse request
 

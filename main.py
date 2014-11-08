@@ -6,7 +6,6 @@ from Common import *
 from Game.Player import Player
 from Game.TextureHolder import TextureHolder
 import pygame
-from Game import Game
 
 if USE_PYQT:
     from PyQt4 import QtGui
@@ -35,5 +34,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
     print ("Hello world" )
