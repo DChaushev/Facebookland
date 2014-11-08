@@ -9,6 +9,7 @@ class Player(Unit):
      def __init__(self, x, y, texture_holder, id):
         Unit.__init__(self, x, y, texture_holder, id)
         self.load_animations()
+        self.speed = 3
 
      def Shoot_arrow(self):
         pass
@@ -23,5 +24,4 @@ class Player(Unit):
             self.walk.append(draw_me)
             x += 130
          self.walk.append(self.walk[1])
-         #self.animation_count_max = (len(self.walk) - 1)
          self.idle_animation = self.walk[1]

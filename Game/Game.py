@@ -7,8 +7,7 @@ BG_COLOR = 150, 150, 80
 import pygame
 import sys
 
-from Game.Global import textureHolder
-from Game.Texture import Texture
+from Game.Global import textureHolder, Texture
 from Game.Player import Player
 
 def exit_game():

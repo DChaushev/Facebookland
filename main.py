@@ -5,7 +5,6 @@ __author__ = 'Admin'
 from Common import *
 from Game.Player import Player
 from Game.TextureHolder import TextureHolder
-from Game.Texture import Texture
 import pygame
 from Game import Game
 

@@ -7,7 +7,7 @@ class Unit(Entity):
     def __init__(self, x, y, texture_holder, id):
         Entity.__init__(self, (x, y), texture_holder, id)
         self.walk = []
-        self.speed = 3
+        self.speed = 1
         self.health = 10
         self.direction = Vector2(0,0)
         self.animation_count = 0

@@ -1,7 +1,6 @@
 from enum import Enum
 
-
 class Layer(Enum):
-    BACKGROUND = "background"
+    BG_LAVA = "background"
     UNITS = "units"
     CLOUDS = "clouds"

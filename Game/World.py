@@ -1,4 +1,3 @@
-from Game import Texture
 from Game import TextureHolder
 from Game import Layer
 import math
