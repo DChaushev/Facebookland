@@ -1,15 +1,14 @@
-from Game.Direction import *
-from pygame import math
+from Game.Direction import Direction
+from Game.Entity import Entity
 
-class Unit:
+class Unit(Entity):
 
-    def __init__(self, x, y, type):
-        self.pos = math.Vector2(x, y)
+    def __init__(self, x, y, texture_holder, id):
+        Entity.__init__(self, x, y, texture_holder, id)
         self.walk_up = []
         self.walk_down = []
         self.walk_left = []
         self.walk_right = []
-        self.textureID = type
         self.speed = 1
 
     def get_sprite(self, texture_id):
@@ -28,9 +27,8 @@ class Unit:
         if direction == Direction.DOWN:
             self.y += self.speed
 
-    def shoot(self):
-        #TODO
+    def generate_animations(self):
         pass
 
-    def get_textureID(self):
-        return self.textureID
+    def shoot(self):
+        pass
