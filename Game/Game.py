@@ -54,6 +54,16 @@ class Game:
 
             # Redraw the background
             screen.fill(BG_COLOR)
+            bg = textureHolder.get(Texture.BG_GRASS)
+
+            x = 0
+            while x < SCREEN_WIDTH:
+                y = 0
+                while y < SCREEN_HEIGHT:
+                        screen.blit(bg, (x, y))
+                        y += bg.get_height()
+                x += bg.get_width()
+            #screen.blit(textureHolder.get(Texture.BG_LAVA), (0, 0))
 
             # Update and redraw all creeps
             #for player in self.players:
