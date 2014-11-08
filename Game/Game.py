@@ -19,6 +19,8 @@ class Game:
         self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
         self.projectiles = []
+        self.tree = Unit()
+        self.air = [Unit()]
         #self.environment = []
 
     def run(self):
@@ -82,5 +84,9 @@ class Game:
             for projectile in self.projectiles:
                 projectile.update()
                 projectile.render(screen)
+
+            for cloud in self.air:
+                cloud.update()
+                cloud.render(screen)
 
             pygame.display.flip()

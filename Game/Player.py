@@ -18,10 +18,10 @@ class Player(Unit):
          x = 0
          for i in range(3):
             sheet = self.texture
-            sheet.set_clip(pygame.Rect(x, 0, 100, 150))
+            sheet.set_clip(pygame.Rect(x, 0, 101, 151))
             draw_me = sheet.subsurface(sheet.get_clip())
             draw_me = pygame.transform.scale(draw_me, (50, 75))
             self.walk.append(draw_me)
-            x += 130
+            x += 132
          self.walk.append(self.walk[1])
          self.idle_animation = self.walk[1]

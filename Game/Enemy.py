@@ -11,8 +11,8 @@ class Enemy(Unit):
     def __init__(self, x, y, texture_holder, id):
         Unit.__init__(self, x, y, texture_holder, id)
         self.target = Entity
-        self.speed = 2
-        self.attack_distance = 1
+        self.speed = 2.5
+        self.attack_distance = 50
         self.load_animations()
 
     def set_target(self, target_):
@@ -22,11 +22,13 @@ class Enemy(Unit):
         target = None
 
     def update(self):
-        self.direction = (self.target.pos - self.pos).normalize()
+        if (self.target.pos - self.pos).length() < self.speed:
+            self.direction = Vector2(0, 0);
+        else:
+            self.set_direction((self.target.pos - self.pos).normalize())
         Unit.update(self)
         if (self.target.pos-self.pos).length() <= self.attack_distance:
             self.target.reduce_health()
-
 
     def load_animations(self):
         x = 0
