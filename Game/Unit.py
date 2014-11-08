@@ -4,8 +4,6 @@ from pygame.math import Vector2
 from pygame import transform
 
 class Unit(Entity):
-
-
     def __init__(self, x, y, texture_holder, id):
         Entity.__init__(self, (x, y), texture_holder, id)
         self.walk_up = []
