@@ -1,13 +1,13 @@
 __author__ = 'Yani Maltsev'
 
-from Unit import Unit
-from Entity import Entity
+from Game.Unit import Unit
+from Game.Entity import Entity
 from pygame.math import Vector2
 
 
 class Enemy(Unit):
 
-    target_pos = math.Vector2
+    target_pos = Vector2()
     def __init__(self, x, y, texture_holder, id):
         Unit.__init__(self, x, y, texture_holder, id)
         self.target = Entity
