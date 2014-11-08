@@ -25,7 +25,7 @@ class MainWidget( QWidget ):
         self.selectedPerson = None
         self.requestWorker = RequestWorker( Common.FACEBOOK_INFO_SERVER_ADDRESS )
         self.gameInstance = Game()
-        self.levelOptions =
+        self.levelOptions = None
 
         mainLayout = QVBoxLayout( self )
         title = QLabel( "Faceland" )
