@@ -4,15 +4,16 @@ class Entity:
 
     pos = math.Vector2
 
-    def __init__(self, x, y, texture_holder, id):
-        self.pos.x = x
-        self.pos.y = y
-        self.texture = texture_holder.get(id)
-        self.dont_walk = []
+    # def __init__(self, x, y, texture_holder, id):
+    #     self.pos.x = x
+    #     self.pos.y = y
+    #     self.texture = texture_holder.get(id)
+    #     self.dont_walk = []
 
     def __init__(self, vector, texture_holder, id):
         self.pos = vector
         self.texture = texture_holder.get(id)
+        self.dont_walk = []
 
     def set_pos(self, x, y):
         self.pos.x = x
@@ -25,6 +26,8 @@ class Entity:
         self.texture = texture_holder.get(id)
 
     def update(self):
+        pass
 
-     def render(self):
+    def render(self, screen):
         '''stationary render'''
+        pass

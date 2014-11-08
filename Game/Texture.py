@@ -2,5 +2,5 @@ __author__ = 'Dimitar'
 from enum import Enum
 
 class Texture(Enum):
-    PLAYER = "player"
-    ZOMBIE = "zombie"
+    PLAYER = 'Game/Resources/textures/Units/hero.png'
+    ZOMBIE = 'Game/Resources/textures/Units/zombie.png'

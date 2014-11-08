@@ -1,6 +1,6 @@
 import Common
 
-from Game.Game import Game
+from Game import Game
 
 if ( __name__== '__main__'):
     print ( "Let's debug this" )
@@ -24,7 +24,7 @@ class MainWidget( QWidget ):
         self.people = []
         self.selectedPerson = None
         self.requestWorker = RequestWorker( Common.FACEBOOK_INFO_SERVER_ADDRESS )
-        self.gameInstance = Game()
+        #self.gameInstance = Game()
 
         mainLayout = QVBoxLayout( self )
         title = QLabel( "Faceland" )

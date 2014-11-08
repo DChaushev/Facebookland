@@ -7,7 +7,7 @@ class TextureHolder:
 
     def load(self, texture_id, file_name):
         texture = image.load(file_name)
-        self.textures[texture_id, texture]
+        self.textures[texture_id] = texture
 
     def get(self, texture_id):
         if texture_id in self.textures:
