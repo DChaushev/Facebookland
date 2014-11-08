@@ -23,7 +23,7 @@ class Game:
 
     def run(self):
         pygame.init()
-        screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
+        screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
         clock = pygame.time.Clock()
         while True:
             # Limit frame speed to 50 FPS
@@ -43,7 +43,9 @@ class Game:
                         self.player.add_direction((1, 0))
                     if event.key == pygame.K_ESCAPE:
                         exit_game()
-
+                    if event.key == pygame.K_SPACE:
+                        self.player.Shoot_arrow()
+                        
                 elif event.type == pygame.KEYUP:
                     if event.key in (pygame.K_UP, pygame.K_w):
                         self.player.add_direction((0, 1))
@@ -56,7 +58,7 @@ class Game:
 
             # Redraw the background
             screen.fill(BG_COLOR)
-            bg = textureHolder.get(Texture.BG_LAVA)
+            bg = textureHolder.get(Texture.BACKGROUND)
 
             x = 0
             while x < SCREEN_WIDTH:

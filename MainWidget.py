@@ -25,6 +25,7 @@ class MainWidget( QWidget ):
         self.selectedPerson = None
         self.requestWorker = RequestWorker( Common.FACEBOOK_INFO_SERVER_ADDRESS )
         self.gameInstance = Game()
+        self.levelOptions =
 
         mainLayout = QVBoxLayout( self )
         title = QLabel( "Faceland" )
@@ -79,4 +80,5 @@ class MainWidget( QWidget ):
         print ( "Launch Button Clicked" )
 
     def onLogButtonClicked(self):
-        self.requestWorker.request()
+        people = self.requestWorker.request()
+        self.setPeople( people )
