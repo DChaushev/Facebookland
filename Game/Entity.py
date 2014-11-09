@@ -24,4 +24,5 @@ class Entity:
 
     def render(self, screen):
         '''stationary render'''
+        screen.blit(self.texture, self.pos)
         pass

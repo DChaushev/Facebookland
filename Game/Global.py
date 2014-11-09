@@ -8,6 +8,8 @@ class Texture(Enum):
     BULLET = 'Game/Resources/textures/Misc/bullet.png'
     BACKGROUND = 'SELECTED DOWN'
     TREE1 = 'Game/Resources/textures/Entities/tree1.png'
+    TREE2 = 'Game/Resources/textures/Entities/tree2.png'
+    TREE3 = 'Game/Resources/textures/Entities/tree3.png'
 
 class Background(Enum):
     LAVA = 'Game/Resources/textures/Background/lava.jpg'

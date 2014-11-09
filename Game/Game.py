@@ -9,10 +9,10 @@ BG_COLOR = 150, 150, 80
 import pygame
 import sys
 
-from Game.Global import textureHolder, Texture
+from Game.Global import textureHolder, Texture, Background
 from Game.Player import Player
-from Game.Unit import Unit
 from Game.Enemy import Enemy
+from Game.Entity import Entity
 from random import randint, choice
 from pygame import math
 
@@ -45,7 +45,11 @@ class Game:
             monster = Enemy (spawn_x, spawn_y, textureHolder, Texture.ZOMBIE)
             monster.set_speed(self.level_options.enemySpeed)
             self.monsters.append(monster)
-        self.air.append(Unit(randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT), textureHolder, Texture.TREE1))
+
+        if self.level_options.enumTexture == Background.GRASS:
+            for i in range(20):
+                self.air.append(Entity((randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT)), textureHolder, Texture.TREE2))
+
         self.player.set_speed(self.level_options.playerSpeed)
         self.player.set_damage(self.level_options.damage)
 
@@ -66,7 +70,7 @@ class Game:
     def collision_detection(self, surface_1, surface_2):
         if len(surface_2.walk) > 0 and len(surface_1.walk) > 0:
             rect1 = pygame.Rect(surface_1.pos.x, surface_1.pos.y, surface_1.walk[0].get_width(), surface_1.walk[0].get_height())
-            rect2 = pygame.Rect(surface_2.pos.x, surface_2.pos.y, surface_2.texture.get_width(), surface_2.texture.get_width())
+            rect2 = pygame.Rect(surface_2.pos.x, surface_2.pos.y, surface_2.texture.get_width(), surface_2.walk[0].get_width())
             if rect1.colliderect(rect2):
                 return True
         else: return False
@@ -169,14 +173,19 @@ class Game:
                 self.handle_bullet(bullet, arena)
                 #print(len(self.projectiles))
 
-            # for cloud in self.air:
-            #    cloud.update()
-            #    cloud.render(screen)
-
             self.update_view_coordinates()
 
+            for cloud in self.air:
+               cloud.update()
+               cloud.render(arena)
+
             screen.blit(arena, (0, 0), pygame.Rect(self.view_x, self.view_y, SCREEN_WIDTH, SCREEN_HEIGHT))
+
+
+
             pygame.display.flip()
+
+
 
     def handle_user_input(self):
         for event in pygame.event.get():

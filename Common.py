@@ -19,7 +19,7 @@ class Level:
         cities =  [ "Dungeon", "Castle", "Rampart", "Conflux" ]
         self.city = cities[ int( data[ 0 ] ) % len( cities ) ]
         self.enemiesDifficulty = int( data[ 1 ] ) % 5
-        self.enemiesCount =  int( data[ 2 ] ) * 4
+        self.enemiesCount =  int(int( data[ 2 ] ) * 3 / 2)
         self.playerSpeed = int( data[3])
         self.enemySpeed = int ( data[4] )
         self.damage = int ( data[5] ) * 4
