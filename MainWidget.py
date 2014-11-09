@@ -40,6 +40,9 @@ class MainWidget( QWidget ):
         self.levelNameLabel       = QLabel()
         self.levelDifficultyLabel = QLabel()
         self.numberOfEnemiesLabel = QLabel()
+        self.playerSpeedLabel     = QLabel()
+        self.enemySpeedLabel      = QLabel()
+        self.playerDamage         = QLabel()
         self.backgroundTexture    = QLabel()
 
         self.logWithFacebookButton = QPushButton( "Log With Facebook ")
@@ -50,9 +53,11 @@ class MainWidget( QWidget ):
         self.launchButton.clicked.connect( self.onLaunchButtonClicked )
 
         formLayout.addRow( self.logWithFacebookButton  , self.launchButton )
-        formLayout.addRow( QLabel( "Level Name"       ), self.levelNameLabel )
         formLayout.addRow( QLabel( "Level Difficulty" ), self.levelDifficultyLabel )
         formLayout.addRow( QLabel( "Enemies"          ), self.numberOfEnemiesLabel )
+        formLayout.addRow( QLabel( "Player Speed"     ), self.playerSpeedLabel )
+        formLayout.addRow( QLabel( "Enemy Speed"      ), self.enemySpeedLabel )
+        formLayout.addRow( QLabel( "Damage"           ), self.playerDamage )
         formLayout.addRow( QLabel( "World"            ), self.backgroundTexture )
 
         subLayout.addLayout( formLayout, 1 )
@@ -90,8 +95,10 @@ class MainWidget( QWidget ):
 
     def updateFormFromSelectedUser(self):
         self.levelDifficultyLabel.setText( Common.Level.LevelDifficultyToString( self.levelOptions.enemiesDifficulty ) )
-        self.levelNameLabel.setText( self.levelOptions.city )
         self.numberOfEnemiesLabel.setText( str( self.levelOptions.enemiesCount ) )
+        self.enemySpeedLabel.setText( str(self.levelOptions.enemySpeed))
+        self.playerSpeedLabel.setText( str(self.levelOptions.playerSpeed))
+        self.playerDamage.setText( str(self.levelOptions.damage))
 
         pix = QPixmap( self.levelOptions.enumTexture.value )
 

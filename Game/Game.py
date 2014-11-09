@@ -11,6 +11,7 @@ import sys
 
 from Game.Global import textureHolder, Texture
 from Game.Player import Player
+from Game.Unit import Unit
 from Game.Enemy import Enemy
 from random import randint
 from pygame import math
@@ -21,14 +22,25 @@ class Game:
         self.level_options = level_options
         self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
-        for i in range(2):
-            self.monsters.append(Enemy (randint(0, ARENA_WIDTH - 1), randint(0, ARENA_HEIGHT - 1), textureHolder, Texture.ZOMBIE))
         self.projectiles = []
         self.view_x = (ARENA_WIDTH - SCREEN_WIDTH) / 2
         self.view_y = (ARENA_HEIGHT - SCREEN_HEIGHT) / 2
         #self.tree = Unit()
-        #self.air = [Unit()]
+        self.air = []
         #self.environment = []
+
+        self.generate_level()
+
+    def generate_level(self):
+        for i in range(self.level_options.enemiesCount):
+            #TODO - random spawn position
+            monster = Enemy (randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT), textureHolder, Texture.ZOMBIE)
+            monster.set_speed(self.level_options.enemySpeed)
+            self.monsters.append(monster)
+        self.air.append(Unit(randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT), textureHolder, Texture.TREE1))
+        self.player.set_speed(self.level_options.playerSpeed)
+        self.player.set_damage(self.level_options.damage)
+
 
     def exit(self):
         #self.exitGame = True
@@ -149,9 +161,9 @@ class Game:
                 self.handle_bullet(bullet, arena)
                 #print(len(self.projectiles))
 
-            #for cloud in self.air:
+            # for cloud in self.air:
             #    cloud.update()
-            #   cloud.render(screen)
+            #    cloud.render(screen)
 
             self.update_view_coordinates()
 

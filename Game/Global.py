@@ -7,6 +7,7 @@ class Texture(Enum):
     ZOMBIE = 'Game/Resources/textures/Units/zombie.png'
     BULLET = 'Game/Resources/textures/Misc/bullet.png'
     BACKGROUND = 'SELECTED DOWN'
+    TREE1 = 'Game/Resources/textures/Entities/tree1.png'
 
 class Background(Enum):
     LAVA = 'Game/Resources/textures/Background/lava.jpg'
