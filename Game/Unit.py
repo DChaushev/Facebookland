@@ -84,7 +84,10 @@ class Unit(Entity):
                screen.blit(transform.rotate(self.idle_animation, angle), self.pos)
 
         if self.health_bar and len(self.walk) > 0:
-            health_bar = Rect(self.pos.x, self.pos.y, (self.health * self.walk[0].get_width())/100, -5)
+            health = (self.health * self.walk[0].get_width())/100
+            if health < 0:
+                health = 0
+            health_bar = Rect(self.pos.x, self.pos.y, health, -5)
             draw.rect(screen, (255, 0, 0), health_bar, 0)
 
 
