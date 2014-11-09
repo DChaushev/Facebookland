@@ -20,6 +20,8 @@ class Game:
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
         self.arrows = []
         self.projectiles = []
+        #self.tree = Unit()
+        #self.air = [Unit()]
         #self.environment = []
 
     def background_render(self, bg, screen):
@@ -89,5 +91,9 @@ class Game:
             for arrow in self.arrows:
                 arrow.update()
                 arrow.render( screen )
+
+            #for cloud in self.air:
+            #    cloud.update()
+             #   cloud.render(screen)
 
             pygame.display.flip()
