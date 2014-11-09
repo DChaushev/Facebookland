@@ -22,6 +22,15 @@ class Game:
         self.projectiles = []
         #self.environment = []
 
+    def background_render(self, bg, screen):
+        x = 0
+        while x < SCREEN_WIDTH:
+            y = 0
+            while y < SCREEN_HEIGHT:
+                screen.blit(bg, (x, y))
+                y += bg.get_height()
+            x += bg.get_width()
+
     def run(self, levelOptions):
         pygame.init()
         screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
@@ -62,15 +71,7 @@ class Game:
             textureHolder.load(levelOptions.enumTexture, levelOptions.enumTexture.value)
             bg = textureHolder.get(levelOptions.enumTexture)
 
-            x = 0
-            while x < SCREEN_WIDTH:
-                y = 0
-                while y < SCREEN_HEIGHT:
-                        screen.blit(bg, (x, y))
-                        y += bg.get_height()
-                x += bg.get_width()
-            #screen.blit(textureHolder.get(Texture.BG_LAVA), (0, 0))
-
+            self.background_render(bg, screen)
             # Update and redraw all creeps
             #for player in self.players:
             self.player.update()
