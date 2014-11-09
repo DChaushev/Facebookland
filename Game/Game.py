@@ -1,7 +1,7 @@
 __author__ = 'Yani Maltsev'
 
-SCREEN_WIDTH = 960
-SCREEN_HEIGHT = 540
+SCREEN_WIDTH = 1100 #1280 #950
+SCREEN_HEIGHT = 650 #720 # 540
 ARENA_WIDTH = 1500
 ARENA_HEIGHT = 1000
 BG_COLOR = 150, 150, 80
@@ -15,6 +15,7 @@ from Game.Unit import Unit
 from Game.Enemy import Enemy
 from Game.Entity import Entity
 from random import randint, choice
+from Game.Global import MUSIC
 from pygame import math
 
 
@@ -24,33 +25,52 @@ class Game:
         self.view_x = (ARENA_WIDTH - SCREEN_WIDTH) / 2
         self.view_y = (ARENA_HEIGHT - SCREEN_HEIGHT) / 2
         self.player = Player( self.view_x + SCREEN_WIDTH / 2, self.view_y + SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
-        self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
+        self.monsters = []
         self.projectiles = []
         self.moonwalk = False;
         self.shoot = False;
         #self.tree = Unit()
         self.air = []
-        #self.environment = []
 
+        #self.environment = []
+        print(self.level_options.person_name)
         self.generate_level()
 
-    def generate_level(self):
-        for i in range(self.level_options.enemiesCount):
+    def random_coords(self):
+        uy = randint(0, int(self.view_y))
+        dy = randint(int(self.view_y) + SCREEN_HEIGHT, ARENA_HEIGHT)
+        lx = randint(0, int(self.view_x))
+        rx = randint(int(self.view_x) + SCREEN_WIDTH, ARENA_WIDTH)
 
-            uy = randint(0, self.view_y)
-            dy = randint(self.view_y + SCREEN_HEIGHT, ARENA_HEIGHT)
-            lx = randint(0, self.view_x)
-            rx = randint(self.view_x + SCREEN_WIDTH, ARENA_WIDTH)
+        spawn_x = choice([lx, rx])
+        spawn_y = choice([uy, dy])
 
-            spawn_x = choice([lx, rx])
-            spawn_y = choice([uy, dy])
+        return  spawn_x, spawn_y
 
+    def gen_monsters(self):
+        for i in range(self.level_options.enemiesCount - 1):
+            spawn_x, spawn_y = self.random_coords()
             monster = Enemy(spawn_x, spawn_y, textureHolder, Texture.ZOMBIE)
             monster.set_speed(self.level_options.enemySpeed)
+            monster.letter = self.level_options.person_name[i]
             self.monsters.append(monster)
 
-        if self.level_options.enumTexture == Background.GRASS:
-            for i in range(20):
+
+    def generate_level(self):
+
+        self.gen_monsters()
+
+        spawn_x, spawn_y = self.random_coords()
+
+        monster = Enemy(spawn_x, spawn_y, textureHolder, Texture.ZOMBIE)
+        monster.set_speed(self.level_options.enemySpeed - 0.5)
+        #monster.set_damage(monster.damage + 50)
+        monster.letter = self.level_options.person_name.split(" ")[0]
+        monster.set_health(700)
+        self.monsters.append(monster)
+
+        if self.level_options.enumTexture == Background.GRASS or self.level_options.enumTexture == Background.BLUEROCK:
+            for i in range(15):
                 self.air.append(Entity((randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT)), textureHolder, Texture.TREE2))
 
         self.player.set_speed(self.level_options.playerSpeed)
@@ -135,6 +155,7 @@ class Game:
                     #monster.reduce_health(self.player.damage)
                 if bullet in self.projectiles:
                     self.projectiles.remove(bullet)
+                break
                 #print(monster.health)
         bullet.render( screen )
 
@@ -158,9 +179,30 @@ class Game:
         #diag_holdon = 0
         #diag_multi = math.Vector2(0, 0)
 
+
+        # pygame.mixer.music.load(MUSIC)
+        # pygame.mixer.music.play()
+
+
+        seconds = (700 + 100 * (self.level_options.enemiesCount - 1)) / (self.player.damage * 4) * 1000
+        print(seconds)
+
+        scoreIncrementTimer = 0
+        lastFrameTicks = pygame.time.get_ticks()
+
         while True:
             # Limit frame speed to 50 FPS
             time_passed = clock.tick(50)
+
+            thisFrameTicks = pygame.time.get_ticks()
+            ticksSinceLastFrame = thisFrameTicks - lastFrameTicks
+            lastFrameTicks = thisFrameTicks
+
+            scoreIncrementTimer = scoreIncrementTimer + ticksSinceLastFrame
+            if scoreIncrementTimer > seconds:
+                self.gen_monsters()
+                scoreIncrementTimer = 0
+
 
             # Redraw the background
             arena.fill(BG_COLOR)

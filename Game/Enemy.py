@@ -17,6 +17,7 @@ class Enemy(Unit):
         self.load_animations()
         self.damage = 1
         self.health_bar = True
+        self.letter = "A"
 
     def set_target(self, target_):
         self.target = target_
@@ -32,6 +33,12 @@ class Enemy(Unit):
         Unit.update(self)
         if (self.target.pos-self.pos).length() <= self.attack_distance:
             self.target.reduce_health(self.damage)
+
+    def render(self, screen):
+        super( Enemy, self ).render(screen)
+        letter_font = pygame.font.Font(None, 50)
+        letter_text = letter_font.render(self.letter, True, (255, 255, 255))
+        screen.blit(letter_text, [self.pos.x + 30, self.pos.y - 40])
 
     def load_animations(self):
         x = 0
