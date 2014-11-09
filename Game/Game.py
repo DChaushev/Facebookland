@@ -23,8 +23,8 @@ class Game:
         self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
         self.projectiles = []
-        self.view_x = 0
-        self.view_y = 0
+        self.view_x = (ARENA_WIDTH - SCREEN_WIDTH) / 2
+        self.view_y = (ARENA_HEIGHT - SCREEN_HEIGHT) / 2
         #self.tree = Unit()
         self.air = []
         #self.environment = []
@@ -54,29 +54,6 @@ class Game:
                 screen.blit(bg, (x, y))
                 y += bg.get_height()
             x += bg.get_width()
-
-    # def background_render(self, bg, screen):
-    #     x = self.view_x - 100
-    #     if x < 0:
-    #         x = 0
-    #
-    #     end_x = SCREEN_WIDTH + self.view_x + 100
-    #     if end_x > ARENA_WIDTH:
-    #         end_x = ARENA_WIDTH
-    #
-    #     end_y = SCREEN_HEIGHT + self.view_y + 100
-    #     if end_y > ARENA_HEIGHT:
-    #         end_y = ARENA_HEIGHT
-    #
-    #     while x < end_x:
-    #         y = self.view_y - 100
-    #         if y < 0:
-    #             y = 0
-    #
-    #         while y < end_y:
-    #             screen.blit(bg, (x, y))
-    #             y += bg.get_height()
-    #         x += bg.get_width()
 
     def collision_detection(self, surface_1, surface_2):
         if len(surface_2.walk) > 0 and len(surface_1.walk) > 0:
@@ -143,44 +120,18 @@ class Game:
 
     def run(self):
         pygame.init()
-        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF | pygame.HWSURFACE,)
-        #screen.set_clip(pygame.Rect(0, 0, 101, 151))
-
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF,)
         arena = pygame.Surface((ARENA_WIDTH, ARENA_HEIGHT), pygame.HWSURFACE)
-
         clock = pygame.time.Clock()
-        while 1:
+        #diagonal = False
+        #diag_holdon = 0
+        #diag_multi = math.Vector2(0, 0)
+
+        while True:
             # Limit frame speed to 50 FPS
             time_passed = clock.tick(50)
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.exit()
-                    return
-                elif event.type == pygame.KEYDOWN:
-                    if event.key in (pygame.K_UP, pygame.K_w):
-                        self.player.add_direction((0, -1))
-                    if event.key in (pygame.K_DOWN, pygame.K_s):
-                        self.player.add_direction((0, 1))
-                    if event.key in (pygame.K_LEFT, pygame.K_a):
-                        self.player.add_direction((-1, 0))
-                    if event.key in (pygame.K_RIGHT, pygame.K_d):
-                        self.player.add_direction((1, 0))
-                    if event.key == pygame.K_ESCAPE:
-                        self.exit()
-                        return
-                    if event.key == pygame.K_SPACE:
-                        self.projectiles.append( self.player.shoot() )
 
-                elif event.type == pygame.KEYUP:
-                    if event.key in (pygame.K_UP, pygame.K_w):
-                        self.player.add_direction((0, 1))
-                    elif event.key in (pygame.K_DOWN, pygame.K_s):
-                        self.player.add_direction((0, -1))
-                    elif event.key in (pygame.K_LEFT, pygame.K_a):
-                        self.player.add_direction((1, 0))
-                    elif event.key in (pygame.K_RIGHT, pygame.K_d):
-                        self.player.add_direction((-1, 0))
 
             # Redraw the background
             arena.fill(BG_COLOR)
@@ -189,8 +140,10 @@ class Game:
 
             self.background_render(bg, arena)
 
+            if self.handle_user_input():
+                return
+
             # Update and redraw all creeps
-            #for player in self.players:
             self.player.update()
             self.player.render(arena)
 
@@ -206,7 +159,7 @@ class Game:
 
             for bullet in self.projectiles:
                 self.handle_bullet(bullet, arena)
-                print(len(self.projectiles))
+                #print(len(self.projectiles))
 
             # for cloud in self.air:
             #    cloud.update()
@@ -216,6 +169,37 @@ class Game:
 
             screen.blit(arena, (0, 0), pygame.Rect(self.view_x, self.view_y, SCREEN_WIDTH, SCREEN_HEIGHT))
             pygame.display.flip()
+
+    def handle_user_input(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.exit()
+                return True
+            elif event.type == pygame.KEYDOWN:
+                if event.key in (pygame.K_UP, pygame.K_w):
+                    self.player.add_direction((0, -1))
+                if event.key in (pygame.K_DOWN, pygame.K_s):
+                    self.player.add_direction((0, 1))
+                if event.key in (pygame.K_LEFT, pygame.K_a):
+                    self.player.add_direction((-1, 0))
+                if event.key in (pygame.K_RIGHT, pygame.K_d):
+                    self.player.add_direction((1, 0))
+                if event.key == pygame.K_ESCAPE:
+                    self.exit()
+                    return True
+                if event.key == pygame.K_SPACE:
+                    self.projectiles.append( self.player.shoot() )
+            elif event.type == pygame.KEYUP:
+                if event.key in (pygame.K_UP, pygame.K_w):
+                    self.player.add_direction((0, 1))
+                elif event.key in (pygame.K_DOWN, pygame.K_s):
+                    self.player.add_direction((0, -1))
+                elif event.key in (pygame.K_LEFT, pygame.K_a):
+                    self.player.add_direction((1, 0))
+                elif event.key in (pygame.K_RIGHT, pygame.K_d):
+                    self.player.add_direction((-1, 0))
+
+        return False;
 
     def update_view_coordinates(self):
         if self.player.pos.x > 3/4 * SCREEN_WIDTH + self.view_x:

@@ -35,10 +35,10 @@ class Enemy(Unit):
     def load_animations(self):
         x = 0
         for i in range(8):
-           sheet = self.texture
-           sheet.set_clip(pygame.Rect(x, 0, 45, 40))
-           draw_me = sheet.subsurface(sheet.get_clip())
-           draw_me = pygame.transform.scale(draw_me, (90, 80))
-           self.walk.append(draw_me)
-           x += 45
+            sheet = self.texture
+            sheet.set_clip(pygame.Rect(x, 0, 45, 40))
+            draw_me = sheet.subsurface(sheet.get_clip())
+            draw_me = pygame.transform.scale(draw_me, (90, 80))
+            self.walk.append(draw_me)
+            x += 45
         self.idle_animation = self.walk[0]
