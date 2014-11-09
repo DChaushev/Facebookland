@@ -105,6 +105,15 @@ class Game:
             pygame.display.update()
 
 
+    def get_min(self, collisions):
+        d = collisions[0]
+        min_d = collisions[0].pos.distance_to(self.player.pos)
+        for i, c in enumerate(collisions):
+            if c.pos.distance_to(self.player.pos) <= min_d:
+                min_d = c.pos.distance_to(self.player.pos)
+                d = collisions[i]
+        return d
+
     def handle_bullet(self, bullet, screen):
         bullet.update()
 
@@ -112,12 +121,20 @@ class Game:
             self.projectiles.remove(bullet)
             return
 
+        collisions = []
+
         for monster in self.monsters:
             if self.collision_detection(monster, bullet):
-                monster.reduce_health(self.player.damage)
+                collisions.append(monster)
+            if len(collisions) > 0:
+                m = self.get_min(collisions)
+                m.reduce_health(self.player.damage)
+                    #monster.reduce_health(self.player.damage)
                 if bullet in self.projectiles:
                     self.projectiles.remove(bullet)
+                # break
                 #print(monster.health)
+
         bullet.render( screen )
 
     def handle_monsters(self, screen):

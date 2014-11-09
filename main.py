@@ -18,7 +18,8 @@ app = QtGui.QApplication(sys.argv)
 
 from MainWidget import MainWidget
 
-testPeople = [ Person("Georgi Sinekliev", "12342526" ), Person( "Spas Kiuchukov", "243436634" ), Person( "Dimitar Chaushev", "33442406" ) ]
+testPeople = [ Person("Georgi Sinekliev", "1234252" ), Person( "Spas Kiuchukov", "2434366" ), Person( "Dimitar Chaushev", "3344240" ), \
+               Person("Peter Petrov", "7644233"), Person("Ivan Ivanov", "5553269"), Person("Dimitar Dimitrov", "8964348")]
 
 def main():
     w = MainWidget()

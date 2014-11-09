@@ -1,4 +1,3 @@
-
 from Game.Entity import Entity
 from pygame.math import Vector2
 from pygame import transform
@@ -6,6 +5,7 @@ from Game.Game import ARENA_WIDTH
 from Game.Game import ARENA_HEIGHT
 from pygame import draw
 from pygame import Rect
+from pygame import mouse
 
 class Unit(Entity):
     def __init__(self, x, y, texture_holder, id):
@@ -70,11 +70,9 @@ class Unit(Entity):
         else:
             self.animation_count += 1
 
-        angle = 0
         if not self.direction.x == 0 or not self.direction.y == 0:
             angle = self.direction.angle_to((0, -1))
-            animation_index = int(int((self.animation_count * len(self.walk)) - 1)/self.animation_count_max)
-            #print(animation_index)
+            animation_index = int(int((self.animation_count * len(self.walk)) - 1) / self.animation_count_max)
 
             screen.blit(transform.rotate(self.walk[animation_index], angle), self.pos)
         else:
@@ -83,7 +81,10 @@ class Unit(Entity):
                screen.blit(transform.rotate(self.idle_animation, angle), self.pos)
 
         if self.health_bar and len(self.walk) > 0:
-            health_bar = Rect(self.pos.x, self.pos.y, (self.health * self.walk[0].get_width())/100, -5)
+            health = (self.health * self.walk[0].get_width())/100
+            if health < 0:
+                health = 0
+            health_bar = Rect(self.pos.x, self.pos.y, health, -5)
             draw.rect(screen, (255, 0, 0), health_bar, 0)
 
 
