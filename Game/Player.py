@@ -6,7 +6,7 @@ __author__ = 'Yani Maltsev'
 from Game.Unit import Unit
 from Game.Bullet import Bullet
 import pygame
-import math
+from pygame import math
 from Game.Global import Texture, textureHolder
 
 
@@ -15,6 +15,7 @@ class Player(Unit):
     def __init__(self, x, y, texture_holder, id):
         Unit.__init__(self, x, y, texture_holder, id)
         self.load_animations()
+        self.direction = math.Vector2(0,-1)
         self.default_speed = 5
         self.speed = 0
         self.health_bar = True
