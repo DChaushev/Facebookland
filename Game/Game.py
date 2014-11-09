@@ -85,7 +85,7 @@ class Game:
         surf = pygame.transform.smoothscale(screen, scale_size)
         surf = pygame.transform.smoothscale(surf, surf_size)
 
-        while 1:
+        while True:
             screen.blit(surf, (0,0))
             screen.blit(text, [text_x, text_y])
 
