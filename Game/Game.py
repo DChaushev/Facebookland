@@ -39,7 +39,7 @@ class Game:
 
     def run(self):
         pygame.init()
-        screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
+        screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.DOUBLEBUF | pygame.HWSURFACE,)
         clock = pygame.time.Clock()
 
         while not self.exitGame:

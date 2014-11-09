@@ -24,6 +24,12 @@ class Unit(Entity):
         self.last_vector = self.direction
         self.direction = dir
 
+    def get_orientation(self):
+        if self.direction == Vector2(0, 0):
+            return self.last_vector
+        else:
+            return self.direction
+
     def reduce_health(self):
         self.health -= 1
 

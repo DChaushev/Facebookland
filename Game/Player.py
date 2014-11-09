@@ -14,13 +14,8 @@ class Player(Unit):
 
      def Shoot_arrow( self ):
         arrow = Arrow( self.pos.x, self.pos.y, textureHolder, Texture.BULLET )
-        if ( self.direction == pygame.math.Vector2( 0, 0 ) ):
-            arrow.set_direction( self.last_vector )
-        else:
-            arrow.set_direction( self.direction )
-
-        arrow.set_speed( 15 )
-
+        arrow.set_direction(self.get_orientation())
+        arrow.set_speed(15)
         return arrow
 
 
