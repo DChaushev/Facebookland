@@ -11,6 +11,7 @@ import sys
 
 from Game.Global import textureHolder, Texture, Background
 from Game.Player import Player
+from Game.Unit import Unit
 from Game.Enemy import Enemy
 from Game.Entity import Entity
 from random import randint, choice
@@ -117,7 +118,9 @@ class Game:
                 monster.reduce_health(self.player.damage)
                 if bullet in self.projectiles:
                     self.projectiles.remove(bullet)
+                break
                 #print(monster.health)
+
         bullet.render( screen )
 
     def handle_monsters(self, screen):
@@ -132,6 +135,7 @@ class Game:
 
     def run(self):
         pygame.init()
+        pygame.key.set_repeat(25, 25)
         screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF,)
         arena = pygame.Surface((ARENA_WIDTH, ARENA_HEIGHT), pygame.HWSURFACE)
         clock = pygame.time.Clock()
@@ -142,8 +146,6 @@ class Game:
         while True:
             # Limit frame speed to 50 FPS
             time_passed = clock.tick(50)
-
-
 
             # Redraw the background
             arena.fill(BG_COLOR)
@@ -180,12 +182,7 @@ class Game:
                cloud.render(arena)
 
             screen.blit(arena, (0, 0), pygame.Rect(self.view_x, self.view_y, SCREEN_WIDTH, SCREEN_HEIGHT))
-
-
-
             pygame.display.flip()
-
-
 
     def handle_user_input(self):
         for event in pygame.event.get():
@@ -194,29 +191,21 @@ class Game:
                 return True
             elif event.type == pygame.KEYDOWN:
                 if event.key in (pygame.K_UP, pygame.K_w):
-                    self.player.add_direction((0, -1))
-                if event.key in (pygame.K_DOWN, pygame.K_s):
-                    self.player.add_direction((0, 1))
+                    self.player.speed = self.player.default_speed
                 if event.key in (pygame.K_LEFT, pygame.K_a):
-                    self.player.add_direction((-1, 0))
+                    self.player.set_direction(self.player.get_orientation().rotate(-15))
                 if event.key in (pygame.K_RIGHT, pygame.K_d):
-                    self.player.add_direction((1, 0))
+                    self.player.set_direction(self.player.get_orientation().rotate(15))
+                if event.key == pygame.K_SPACE:
+                    self.projectiles.append(self.player.shoot())
                 if event.key == pygame.K_ESCAPE:
                     self.exit()
                     return True
-                if event.key == pygame.K_SPACE:
-                    self.projectiles.append( self.player.shoot() )
+
             elif event.type == pygame.KEYUP:
                 if event.key in (pygame.K_UP, pygame.K_w):
-                    self.player.add_direction((0, 1))
-                elif event.key in (pygame.K_DOWN, pygame.K_s):
-                    self.player.add_direction((0, -1))
-                elif event.key in (pygame.K_LEFT, pygame.K_a):
-                    self.player.add_direction((1, 0))
-                elif event.key in (pygame.K_RIGHT, pygame.K_d):
-                    self.player.add_direction((-1, 0))
-
-        return False;
+                    self.player.speed = 0
+        return False
 
     def update_view_coordinates(self):
         if self.player.pos.x > 3/4 * SCREEN_WIDTH + self.view_x:

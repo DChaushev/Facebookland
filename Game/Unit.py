@@ -11,6 +11,7 @@ class Unit(Entity):
     def __init__(self, x, y, texture_holder, id):
         Entity.__init__(self, (x, y), texture_holder, id)
         self.walk = []
+        self.default_speed = 1
         self.speed = 1
         self.health = 100
         self.direction = Vector2(0,0)
@@ -71,7 +72,7 @@ class Unit(Entity):
             self.animation_count += 1
 
         angle = 0
-        if not self.direction.x == 0 or not self.direction.y == 0:
+        if (self.direction.x != 0 or self.direction.y != 0):
             angle = self.direction.angle_to((0, -1))
             animation_index = int(int((self.animation_count * len(self.walk)) - 1)/self.animation_count_max)
             #print(animation_index)
