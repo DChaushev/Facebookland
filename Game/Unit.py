@@ -2,6 +2,8 @@
 from Game.Entity import Entity
 from pygame.math import Vector2
 from pygame import transform
+from pygame import draw
+from pygame import Rect
 
 class Unit(Entity):
     def __init__(self, x, y, texture_holder, id):
@@ -13,6 +15,7 @@ class Unit(Entity):
         self.animation_count = 0
         self.animation_count_max = 30
         self.last_vector = Vector2(0, -1)
+        self.damage = 20
 
     def get_sprite(self, texture_id):
         pass
@@ -24,8 +27,8 @@ class Unit(Entity):
         self.last_vector = self.direction
         self.direction = dir
 
-    def reduce_health(self):
-        self.health -= 1
+    def reduce_health(self, dmg):
+        self.health -= dmg
 
     def set_speed(self, s):
         self.speed = s
@@ -53,6 +56,10 @@ class Unit(Entity):
             angle = self.last_vector.angle_to((0, -1))
             if self.idle_animation != None:
                screen.blit(transform.rotate(self.idle_animation, angle), self.pos)
+
+        if self.health_bar and len(self.walk) > 0:
+            health_bar = Rect(self.pos.x, self.pos.y, (self.health * self.walk[0].get_width())/100, -5)
+            draw.rect(screen, (255, 0, 0), health_bar, 0)
 
 
 

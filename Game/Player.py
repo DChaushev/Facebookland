@@ -1,7 +1,7 @@
 __author__ = 'Yani Maltsev'
 
 from Game.Unit import Unit
-from Game.Arrow import Arrow
+from Game.Bullet import Bullet
 import pygame
 import math
 from Game.Global import Texture, textureHolder
@@ -11,17 +11,18 @@ class Player(Unit):
         Unit.__init__(self, x, y, texture_holder, id)
         self.load_animations()
         self.speed = 3
+        self.health_bar = True
 
-     def Shoot_arrow( self ):
-        arrow = Arrow( self.pos.x, self.pos.y, textureHolder, Texture.BULLET )
+     def shoot( self ):
+        bullet = Bullet( self.pos.x, self.pos.y, textureHolder, Texture.BULLET )
         if ( self.direction == pygame.math.Vector2( 0, 0 ) ):
-            arrow.set_direction( self.last_vector )
+            bullet.set_direction( self.last_vector )
         else:
-            arrow.set_direction( self.direction )
+            bullet.set_direction( self.direction )
 
-        arrow.set_speed( 15 )
+        bullet.set_speed( 15 )
 
-        return arrow
+        return bullet
 
 
      def load_animations(self):

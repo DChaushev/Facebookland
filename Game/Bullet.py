@@ -2,14 +2,15 @@ __author__ = 'Yani Maltsev'
 
 from Game.Unit import Unit
 
-class Arrow(Unit):
+class Bullet(Unit):
     def __init__(self, x, y, texture_holder, id):
         Unit.__init__(self, x, y, texture_holder, id)
         self.load_animations()
         self.speed = 4
 
+
     def update(self):
-        super( Arrow, self ).update()
+        super( Bullet, self ).update()
 
     def load_animations( self ):
         self.walk.append( self.texture )

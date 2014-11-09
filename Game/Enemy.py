@@ -11,9 +11,11 @@ class Enemy(Unit):
     def __init__(self, x, y, texture_holder, id):
         Unit.__init__(self, x, y, texture_holder, id)
         self.target = Entity
-        self.speed = 2.5
+        self.speed = 1
         self.attack_distance = 50
         self.load_animations()
+        self.damage = 1
+        self.health_bar = True
 
     def set_target(self, target_):
         self.target = target_
@@ -28,7 +30,7 @@ class Enemy(Unit):
             self.set_direction((self.target.pos - self.pos).normalize())
         Unit.update(self)
         if (self.target.pos-self.pos).length() <= self.attack_distance:
-            self.target.reduce_health()
+            self.target.reduce_health(self.damage)
 
     def load_animations(self):
         x = 0
@@ -36,7 +38,7 @@ class Enemy(Unit):
            sheet = self.texture
            sheet.set_clip(pygame.Rect(x, 0, 45, 40))
            draw_me = sheet.subsurface(sheet.get_clip())
-           draw_me = pygame.transform.scale(draw_me, (50, 75))
+           draw_me = pygame.transform.scale(draw_me, (90, 80))
            self.walk.append(draw_me)
            x += 45
         self.idle_animation = self.walk[0]

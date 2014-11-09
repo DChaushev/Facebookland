@@ -7,7 +7,7 @@ class Entity:
     def __init__(self, vector, texture_holder, id):
         self.pos = vector
         self.texture = texture_holder.get(id)
-        print(self.texture)
+        self.health_bar = False
 
     def set_pos(self, x, y):
         self.pos.x = x
