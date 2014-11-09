@@ -74,7 +74,8 @@ class Unit(Entity):
         angle = 0
         if (self.direction.x != 0 or self.direction.y != 0):
             angle = self.direction.angle_to((0, -1))
-            animation_index = int(int((self.animation_count * len(self.walk)) - 1) / self.animation_count_max)
+            animation_index = int(int((self.animation_count * len(self.walk)) - 1)/self.animation_count_max)
+            #print(animation_index)
 
             screen.blit(transform.rotate(self.walk[animation_index], angle), self.pos)
         else:

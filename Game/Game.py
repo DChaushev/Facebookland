@@ -133,9 +133,7 @@ class Game:
                     #monster.reduce_health(self.player.damage)
                 if bullet in self.projectiles:
                     self.projectiles.remove(bullet)
-                # break
                 #print(monster.health)
-
         bullet.render( screen )
 
     def handle_monsters(self, screen):
