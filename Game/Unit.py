@@ -30,6 +30,12 @@ class Unit(Entity):
     def reduce_health(self, dmg):
         self.health -= dmg
 
+    def get_orientation(self):
+        if self.direction == Vector2(0, 0):
+            return self.last_vector
+        else:
+            return self.direction
+
     def set_speed(self, s):
         self.speed = s
 

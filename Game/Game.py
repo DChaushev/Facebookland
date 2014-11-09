@@ -16,7 +16,8 @@ def exit_game():
     sys.exit()
 
 class Game:
-    def __init__(self):
+    def __init__(self, level_options):
+        self.level_options = level_options
         self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
         for i in range(2):
