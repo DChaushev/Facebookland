@@ -13,18 +13,18 @@ from Game.Global import textureHolder, Texture
 from Game.Player import Player
 from Game.Unit import Unit
 from Game.Enemy import Enemy
-from random import randint
+from random import randint, choice
 from pygame import math
 
 
 class Game:
     def __init__(self, level_options):
         self.level_options = level_options
-        self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
-        self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
-        self.projectiles = []
         self.view_x = (ARENA_WIDTH - SCREEN_WIDTH) / 2
         self.view_y = (ARENA_HEIGHT - SCREEN_HEIGHT) / 2
+        self.player = Player( self.view_x + SCREEN_WIDTH / 2, self.view_y + SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
+        self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
+        self.projectiles = []
         #self.tree = Unit()
         self.air = []
         #self.environment = []
@@ -33,8 +33,16 @@ class Game:
 
     def generate_level(self):
         for i in range(self.level_options.enemiesCount):
-            #TODO - random spawn position
-            monster = Enemy (randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT), textureHolder, Texture.ZOMBIE)
+
+            uy = randint(0, self.view_y)
+            dy = randint(self.view_y + SCREEN_HEIGHT, ARENA_HEIGHT)
+            lx = randint(0, self.view_x)
+            rx = randint(self.view_x + SCREEN_WIDTH, ARENA_WIDTH)
+
+            spawn_x = choice([lx, rx])
+            spawn_y = choice([uy, dy])
+
+            monster = Enemy (spawn_x, spawn_y, textureHolder, Texture.ZOMBIE)
             monster.set_speed(self.level_options.enemySpeed)
             self.monsters.append(monster)
         self.air.append(Unit(randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT), textureHolder, Texture.TREE1))
