@@ -20,7 +20,11 @@ class Level:
         self.city = cities[ int( data[ 0 ] ) % len( cities ) ]
         self.enemiesDifficulty = int( data[ 1 ] ) % 5
         self.enemiesCount =  int( data[ 2 ] ) * 4
-        self.enumTexture = backgrounds_list[ int( data[ 3 ] ) % len ( backgrounds_list ) ]
+        self.playerSpeed = int( data[3])
+        self.enemySpeed = int ( data[4] )
+        self.damage = int ( data[5] ) * 4
+        self.enumTexture = backgrounds_list[ int( data[ 6 ] ) % len ( backgrounds_list ) ]
+
 
     @staticmethod
     def LevelDifficultyToString( difficulty ):

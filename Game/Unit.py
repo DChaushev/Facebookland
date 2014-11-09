@@ -18,7 +18,7 @@ class Unit(Entity):
         self.animation_count_max = 30
         self.last_vector = Vector2(0, -1)
         self.damage = 20
-        self.is_bullet=False;
+        self.is_bullet=False
 
     def get_sprite(self, texture_id):
         pass
@@ -41,6 +41,9 @@ class Unit(Entity):
 
     def set_speed(self, s):
         self.speed = s
+
+    def set_damage(self, dmg):
+        self.damage = dmg
 
     def move(self):
         self.pos += self.direction * self.speed
@@ -79,7 +82,6 @@ class Unit(Entity):
         if self.health_bar and len(self.walk) > 0:
             health_bar = Rect(self.pos.x, self.pos.y, (self.health * self.walk[0].get_width())/100, -5)
             draw.rect(screen, (255, 0, 0), health_bar, 0)
-
 
 
     def generate_animations(self):
