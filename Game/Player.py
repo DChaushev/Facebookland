@@ -15,15 +15,13 @@ class Player(Unit):
         self.speed = 3
         self.health_bar = True
 
-     def shoot( self ):
+    def shoot( self ):
         bullet = Bullet( self.pos.x, self.pos.y, textureHolder, Texture.BULLET )
         if ( self.direction == pygame.math.Vector2( 0, 0 ) ):
             bullet.set_direction( self.last_vector )
         else:
             bullet.set_direction( self.direction )
-
         bullet.set_speed( 15 )
-
         return bullet
 
     def load_animations(self):

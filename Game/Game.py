@@ -24,7 +24,8 @@ class Game:
         for i in range(2):
             self.monsters.append(Enemy (randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT), textureHolder, Texture.ZOMBIE))
         self.projectiles = []
-        self.isOver = False
+        self.view_x = 0
+        self.view_y = 0
         #self.tree = Unit()
         #self.air = [Unit()]
         #self.environment = []
@@ -81,7 +82,7 @@ class Game:
         text_x = screen.get_width() / 2 - text_rect.width / 2
         text_y = screen.get_height() / 2 - text_rect.height / 2
 
-        scale = 1.0/float(5)
+        scale = 1.0/float(4)
         surf_size = screen.get_size()
         scale_size = (int(surf_size[0]*scale), int(surf_size[1]*scale))
         surf = pygame.transform.smoothscale(screen, scale_size)
@@ -106,7 +107,7 @@ class Game:
     def handle_bullet(self, bullet, screen):
         bullet.update()
 
-        if bullet.pos.x < 0 or bullet.pos.x > SCREEN_WIDTH or bullet.pos.y < 0 or bullet.pos.y > SCREEN_HEIGHT:
+        if bullet.pos.x < 0 or bullet.pos.x > ARENA_WIDTH or bullet.pos.y < 0 or bullet.pos.y > ARENA_HEIGHT:
             self.projectiles.remove(bullet)
             return
 
@@ -115,7 +116,7 @@ class Game:
                 monster.reduce_health(self.player.damage)
                 if bullet in self.projectiles:
                     self.projectiles.remove(bullet)
-                print(monster.health)
+                #print(monster.health)
         bullet.render( screen )
 
     def handle_monsters(self, screen):
@@ -170,7 +171,7 @@ class Game:
                         self.player.add_direction((-1, 0))
 
             # Redraw the background
-            screen.fill(BG_COLOR)
+            arena.fill(BG_COLOR)
             textureHolder.load(self.level_options.enumTexture, self.level_options.enumTexture.value)
             bg = textureHolder.get(self.level_options.enumTexture)
 
@@ -184,7 +185,7 @@ class Game:
             if len(self.monsters) > 0:
                 self.handle_monsters(arena)
             else: #TODO: win after killing all 3 waves of zombies
-                self.game_over(arena, "You Win")
+                self.game_over(screen, "You Win")
                 return
 
             if self.player.health < 0:
@@ -192,7 +193,7 @@ class Game:
                 return
 
             for bullet in self.projectiles:
-                self.handle_bullet(bullet, screen)
+                self.handle_bullet(bullet, arena)
                 print(len(self.projectiles))
 
             #for cloud in self.air:

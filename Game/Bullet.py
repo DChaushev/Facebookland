@@ -7,6 +7,7 @@ class Bullet(Unit):
         Unit.__init__(self, x, y, texture_holder, id)
         self.load_animations()
         self.speed = 4
+        self.is_bullet = True
 
 
     def update(self):

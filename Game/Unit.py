@@ -18,6 +18,7 @@ class Unit(Entity):
         self.animation_count_max = 30
         self.last_vector = Vector2(0, -1)
         self.damage = 20
+        self.is_bullet=False;
 
     def get_sprite(self, texture_id):
         pass
@@ -43,6 +44,8 @@ class Unit(Entity):
 
     def move(self):
         self.pos += self.direction * self.speed
+        if self.is_bullet:
+            return
         if self.pos.x < 10:
             self.pos.x = 10
         if self.pos.x > ARENA_WIDTH - self.walk[0].get_height() - 10:
