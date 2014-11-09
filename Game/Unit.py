@@ -43,7 +43,10 @@ class Unit(Entity):
         self.speed = s
 
     def move(self):
-        self.pos += self.direction * self.speed
+        if self.direction != Vector2(0, 0):
+            self.pos += (self.direction).normalize() * self.speed
+        else:
+            self.pos += self.direction * self.speed
         if self.is_bullet:
             return
         if self.pos.x < 10:
