@@ -1,3 +1,4 @@
+
 from Game.Entity import Entity
 from pygame.math import Vector2
 from pygame import transform
@@ -5,12 +6,12 @@ from Game.Game import ARENA_WIDTH
 from Game.Game import ARENA_HEIGHT
 from pygame import draw
 from pygame import Rect
-from pygame import mouse
 
 class Unit(Entity):
     def __init__(self, x, y, texture_holder, id):
         Entity.__init__(self, (x, y), texture_holder, id)
         self.walk = []
+        self.default_speed = 1
         self.speed = 1
         self.health = 100
         self.direction = Vector2(0,0)
@@ -70,7 +71,8 @@ class Unit(Entity):
         else:
             self.animation_count += 1
 
-        if not self.direction.x == 0 or not self.direction.y == 0:
+        angle = 0
+        if (self.direction.x != 0 or self.direction.y != 0):
             angle = self.direction.angle_to((0, -1))
             animation_index = int(int((self.animation_count * len(self.walk)) - 1) / self.animation_count_max)
 
