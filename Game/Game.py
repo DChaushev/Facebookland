@@ -128,7 +128,8 @@ class Game:
 
             self.background_render(bg, arena)
 
-            self.handle_user_input()
+            if self.handle_user_input():
+                return
 
             # Update and redraw all creeps
             self.player.update()
@@ -161,7 +162,7 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.exit()
-                return
+                return True
             elif event.type == pygame.KEYDOWN:
                 if event.key in (pygame.K_UP, pygame.K_w):
                     self.player.add_direction((0, -1))
@@ -173,7 +174,7 @@ class Game:
                     self.player.add_direction((1, 0))
                 if event.key == pygame.K_ESCAPE:
                     self.exit()
-                    return
+                    return True
                 if event.key == pygame.K_SPACE:
                     self.projectiles.append( self.player.shoot() )
             elif event.type == pygame.KEYUP:
@@ -185,6 +186,8 @@ class Game:
                     self.player.add_direction((1, 0))
                 elif event.key in (pygame.K_RIGHT, pygame.K_d):
                     self.player.add_direction((-1, 0))
+
+        return False;
 
     def update_view_coordinates(self):
         if self.player.pos.x > 3/4 * SCREEN_WIDTH + self.view_x:
