@@ -11,18 +11,22 @@ from Game.Global import textureHolder, Texture
 from Game.Player import Player
 from Game.Enemy import Enemy
 
-def exit_game():
-    sys.exit()
+
 
 class Game:
-    def __init__(self):
+    def __init__(self, level_options):
+        self.level_options = level_options
         self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
         self.arrows = []
         self.projectiles = []
+        self.exitGame = False
         #self.tree = Unit()
         #self.air = [Unit()]
         #self.environment = []
+
+    def exit(self):
+        self.exitGame = True
 
     def background_render(self, bg, screen):
         x = 0
@@ -33,17 +37,18 @@ class Game:
                 y += bg.get_height()
             x += bg.get_width()
 
-    def run(self, levelOptions):
+    def run(self):
         pygame.init()
         screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
         clock = pygame.time.Clock()
-        while True:
+
+        while not self.exitGame:
             # Limit frame speed to 50 FPS
             time_passed = clock.tick(50)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    exit_game()
+                    self.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key in (pygame.K_UP, pygame.K_w):
                         self.player.add_direction((0, -1))
@@ -54,9 +59,9 @@ class Game:
                     if event.key in (pygame.K_RIGHT, pygame.K_d):
                         self.player.add_direction((1, 0))
                     if event.key == pygame.K_ESCAPE:
-                        exit_game()
+                        self.exit()
                     if event.key == pygame.K_SPACE:
-                        self.arrows.append( self.player.Shoot_arrow() )
+                        self.arrows.append(self.player.Shoot_arrow())
                         
                 elif event.type == pygame.KEYUP:
                     if event.key in (pygame.K_UP, pygame.K_w):
@@ -70,8 +75,8 @@ class Game:
 
             # Redraw the background
             screen.fill(BG_COLOR)
-            textureHolder.load(levelOptions.enumTexture, levelOptions.enumTexture.value)
-            bg = textureHolder.get(levelOptions.enumTexture)
+            textureHolder.load(self.level_options.enumTexture, self.level_options.enumTexture.value)
+            bg = textureHolder.get(self.level_options.enumTexture)
 
             self.background_render(bg, screen)
             # Update and redraw all creeps
@@ -90,10 +95,12 @@ class Game:
 
             for arrow in self.arrows:
                 arrow.update()
-                arrow.render( screen )
+                arrow.render(screen)
 
             #for cloud in self.air:
             #    cloud.update()
              #   cloud.render(screen)
 
             pygame.display.flip()
+
+        pygame.display.quit()

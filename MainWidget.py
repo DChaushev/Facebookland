@@ -24,7 +24,6 @@ class MainWidget( QWidget ):
         self.people = []
         self.selectedPerson = None
         self.requestWorker = RequestWorker( Common.FACEBOOK_INFO_SERVER_ADDRESS )
-        self.gameInstance = Game()
         self.levelOptions = None
 
         mainLayout = QVBoxLayout( self )
@@ -78,7 +77,8 @@ class MainWidget( QWidget ):
         self.updateFormFromSelectedUser()
 
     def onLaunchButtonClicked( self ):
-        self.gameInstance.run( self.levelOptions )
+        game = Game(self.levelOptions)
+        game.run()
         print ( "Launch Button Clicked" )
 
     def onLogButtonClicked(self):
