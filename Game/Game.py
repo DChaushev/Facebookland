@@ -26,6 +26,8 @@ class Game:
         self.player = Player( self.view_x + SCREEN_WIDTH / 2, self.view_y + SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
         self.projectiles = []
+        self.moonwalk = False;
+        self.shoot = False;
         #self.tree = Unit()
         self.air = []
         #self.environment = []
@@ -178,9 +180,10 @@ class Game:
             self.update_view_coordinates()
 
             for cloud in self.air:
-               cloud.update()
-               cloud.render(arena)
+                cloud.update()
+                cloud.render(arena)
 
+            #Draw the view on the screen
             screen.blit(arena, (0, 0), pygame.Rect(self.view_x, self.view_y, SCREEN_WIDTH, SCREEN_HEIGHT))
             pygame.display.flip()
 
@@ -198,9 +201,14 @@ class Game:
                 if event.key == pygame.K_d:
                     self.player.set_direction(self.player.get_orientation().rotate(15))
                 if event.key == pygame.K_s:
-                    self.player.speed = -self.player.default_speed
+                    if not self.moonwalk:
+                        self.player.speed = -self.player.default_speed
+                        self.player.set_direction(-self.player.direction)
+                        self.moonwalk = True
                 if event.key == pygame.K_SPACE:
-                    self.projectiles.append(self.player.shoot())
+                    if not self.shoot:
+                        self.projectiles.append(self.player.shoot())
+                        self.shoot = True
                 if event.key == pygame.K_ESCAPE:
                     self.exit()
                     return True
@@ -208,6 +216,9 @@ class Game:
             elif event.type == pygame.KEYUP:
                 if event.key in (pygame.K_w, pygame.K_s):
                     self.player.speed = 0
+                    self.moonwalk = False
+                if event.key == pygame.K_SPACE:
+                    self.shoot = False
         return False
 
     def update_view_coordinates(self):
