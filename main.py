@@ -3,9 +3,9 @@ from PyQt4 import QtGui
 __author__ = 'Admin'
 
 from Common import *
-from Game.Player import Player
-from Game.TextureHolder import TextureHolder
-import pygame
+#from Game.Player import Player
+#from Game.TextureHolder import TextureHolder
+#import pygame
 
 if USE_PYQT:
     from PyQt4 import QtGui

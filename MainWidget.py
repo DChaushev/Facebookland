@@ -46,13 +46,15 @@ class MainWidget( QWidget ):
         self.logWithFacebookButton.clicked.connect( self.onLogButtonClicked)
 
         self.launchButton = QPushButton( "Launch" )
+        self.launchButton.setEnabled(False)
         self.launchButton.clicked.connect( self.onLaunchButtonClicked )
 
+        formLayout.addRow( self.logWithFacebookButton  , self.launchButton )
         formLayout.addRow( QLabel( "Level Name"       ), self.levelNameLabel )
         formLayout.addRow( QLabel( "Level Difficulty" ), self.levelDifficultyLabel )
         formLayout.addRow( QLabel( "Enemies"          ), self.numberOfEnemiesLabel )
         formLayout.addRow( QLabel( "World"            ), self.backgroundTexture )
-        formLayout.addRow( self.logWithFacebookButton  , self.launchButton   )
+
         subLayout.addLayout( formLayout, 1 )
 
         mainLayout.addLayout( subLayout )
@@ -75,6 +77,7 @@ class MainWidget( QWidget ):
         print ( "{0} is selected".format( self.selectedPerson.name ) )
         self.levelOptions = Common.Level( self.selectedPerson.data )
         self.updateFormFromSelectedUser()
+        self.launchButton.setEnabled(True)
 
     def onLaunchButtonClicked( self ):
         game = Game(self.levelOptions)
@@ -92,5 +95,5 @@ class MainWidget( QWidget ):
 
         pix = QPixmap( self.levelOptions.enumTexture.value )
 
-        self.backgroundTexture.setStyleSheet("border-image:url(:/2.png);");
-        self.backgroundTexture.setPixmap( pix.scaled( 150, 150 ) );
+        self.backgroundTexture.setStyleSheet("border-image:url(:/2.png);")
+        self.backgroundTexture.setPixmap( pix.scaled( 150, 150 ) )

@@ -2,6 +2,8 @@
 from Game.Entity import Entity
 from pygame.math import Vector2
 from pygame import transform
+from Game.Game import ARENA_WIDTH
+from Game.Game import ARENA_HEIGHT
 from pygame import draw
 from pygame import Rect
 
@@ -41,6 +43,14 @@ class Unit(Entity):
 
     def move(self):
         self.pos += self.direction * self.speed
+        if self.pos.x < 10:
+            self.pos.x = 10
+        if self.pos.x > ARENA_WIDTH - self.walk[0].get_height() - 10:
+            self.pos.x = ARENA_WIDTH - self.walk[0].get_height() - 10
+        if self.pos.y < 10:
+            self.pos.y = 10
+        if self.pos.y > ARENA_HEIGHT - self.walk[0].get_height() - 10:
+            self.pos.y = ARENA_HEIGHT - self.walk[0].get_height() - 10
 
     def update(self):
         self.move()

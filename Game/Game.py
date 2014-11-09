@@ -1,7 +1,9 @@
 __author__ = 'Yani Maltsev'
 
-SCREEN_WIDTH  = 1280
-SCREEN_HEIGHT = 720
+SCREEN_WIDTH = 960
+SCREEN_HEIGHT = 540
+ARENA_WIDTH = 1500
+ARENA_HEIGHT = 1000
 BG_COLOR = 150, 150, 80
 
 import pygame
@@ -11,11 +13,12 @@ from Game.Global import textureHolder, Texture
 from Game.Player import Player
 from Game.Enemy import Enemy
 from random import randint
+from pygame import math
 
 
 class Game:
     def __init__(self, level_options):
-        self.levelOptions = level_options
+        self.level_options = level_options
         self.player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
         for i in range(2):
@@ -32,12 +35,35 @@ class Game:
 
     def background_render(self, bg, screen):
         x = 0
-        while x < SCREEN_WIDTH:
-            y = 0
-            while y < SCREEN_HEIGHT:
+        while x < ARENA_WIDTH:
+            y=0
+            while y < ARENA_HEIGHT:
                 screen.blit(bg, (x, y))
                 y += bg.get_height()
             x += bg.get_width()
+
+    # def background_render(self, bg, screen):
+    #     x = self.view_x - 100
+    #     if x < 0:
+    #         x = 0
+    #
+    #     end_x = SCREEN_WIDTH + self.view_x + 100
+    #     if end_x > ARENA_WIDTH:
+    #         end_x = ARENA_WIDTH
+    #
+    #     end_y = SCREEN_HEIGHT + self.view_y + 100
+    #     if end_y > ARENA_HEIGHT:
+    #         end_y = ARENA_HEIGHT
+    #
+    #     while x < end_x:
+    #         y = self.view_y - 100
+    #         if y < 0:
+    #             y = 0
+    #
+    #         while y < end_y:
+    #             screen.blit(bg, (x, y))
+    #             y += bg.get_height()
+    #         x += bg.get_width()
 
     def collision_detection(self, surface_1, surface_2):
         if len(surface_2.walk) > 0 and len(surface_1.walk) > 0:
@@ -104,7 +130,11 @@ class Game:
 
     def run(self):
         pygame.init()
-        screen = pygame.display.set_mode( ( SCREEN_WIDTH, SCREEN_HEIGHT ), pygame.DOUBLEBUF | pygame.HWSURFACE, 32)
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF | pygame.HWSURFACE,)
+        #screen.set_clip(pygame.Rect(0, 0, 101, 151))
+
+        arena = pygame.Surface((ARENA_WIDTH, ARENA_HEIGHT), pygame.HWSURFACE)
+
         clock = pygame.time.Clock()
         while 1:
             # Limit frame speed to 50 FPS
@@ -141,19 +171,20 @@ class Game:
 
             # Redraw the background
             screen.fill(BG_COLOR)
-            textureHolder.load(self.levelOptions.enumTexture, self.levelOptions.enumTexture.value)
-            bg = textureHolder.get(self.levelOptions.enumTexture)
+            textureHolder.load(self.level_options.enumTexture, self.level_options.enumTexture.value)
+            bg = textureHolder.get(self.level_options.enumTexture)
 
-            self.background_render(bg, screen)
+            self.background_render(bg, arena)
+
             # Update and redraw all creeps
             #for player in self.players:
             self.player.update()
-            self.player.render(screen)
+            self.player.render(arena)
 
             if len(self.monsters) > 0:
-                self.handle_monsters(screen)
+                self.handle_monsters(arena)
             else: #TODO: win after killing all 3 waves of zombies
-                self.game_over(screen, "You Win")
+                self.game_over(arena, "You Win")
                 return
 
             if self.player.health < 0:
@@ -164,12 +195,29 @@ class Game:
                 self.handle_bullet(bullet, screen)
                 print(len(self.projectiles))
 
-
             #for cloud in self.air:
             #    cloud.update()
-             #   cloud.render(screen)
+            #   cloud.render(screen)
 
+            self.update_view_coordinates()
+
+            screen.blit(arena, (0, 0), pygame.Rect(self.view_x, self.view_y, SCREEN_WIDTH, SCREEN_HEIGHT))
             pygame.display.flip()
 
-
-
+    def update_view_coordinates(self):
+        if self.player.pos.x > 3/4 * SCREEN_WIDTH + self.view_x:
+            self.view_x = self.player.pos.x - 3/4 * SCREEN_WIDTH
+        if self.view_x > ARENA_WIDTH - SCREEN_WIDTH:
+            self.view_x = ARENA_WIDTH - SCREEN_WIDTH
+        if self.player.pos.x < 1/4 * SCREEN_WIDTH + self.view_x:
+            self.view_x = self.player.pos.x - 1/4 * SCREEN_WIDTH
+        if self.view_x < 0:
+            self.view_x = 0
+        if self.player.pos.y > 3/4 * SCREEN_HEIGHT + self.view_y:
+            self.view_y = self.player.pos.y - 3/4 * SCREEN_HEIGHT
+        if self.view_y > ARENA_HEIGHT - SCREEN_HEIGHT:
+            self.view_y = ARENA_HEIGHT - SCREEN_HEIGHT
+        if self.player.pos.y < 1/4 * SCREEN_HEIGHT + self.view_y:
+            self.view_y = self.player.pos.y - 1/4 * SCREEN_HEIGHT
+        if self.view_y < 0:
+            self.view_y = 0
