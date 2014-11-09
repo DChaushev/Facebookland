@@ -43,7 +43,7 @@ class Game:
             spawn_x = choice([lx, rx])
             spawn_y = choice([uy, dy])
 
-            monster = Enemy (spawn_x, spawn_y, textureHolder, Texture.ZOMBIE)
+            monster = Enemy(spawn_x, spawn_y, textureHolder, Texture.ZOMBIE)
             monster.set_speed(self.level_options.enemySpeed)
             self.monsters.append(monster)
 
@@ -208,12 +208,15 @@ class Game:
                 self.exit()
                 return True
             elif event.type == pygame.KEYDOWN:
-                if event.key in (pygame.K_UP, pygame.K_w):
+                #event.key in (pygame.K_UP, pygame.K_w)
+                if event.key == pygame.K_w:
                     self.player.speed = self.player.default_speed
-                if event.key in (pygame.K_LEFT, pygame.K_a):
+                if event.key == pygame.K_a:
                     self.player.set_direction(self.player.get_orientation().rotate(-15))
-                if event.key in (pygame.K_RIGHT, pygame.K_d):
+                if event.key == pygame.K_d:
                     self.player.set_direction(self.player.get_orientation().rotate(15))
+                if event.key == pygame.K_s:
+                    self.player.speed = -self.player.default_speed
                 if event.key == pygame.K_SPACE:
                     self.projectiles.append(self.player.shoot())
                 if event.key == pygame.K_ESCAPE:
@@ -221,7 +224,7 @@ class Game:
                     return True
 
             elif event.type == pygame.KEYUP:
-                if event.key in (pygame.K_UP, pygame.K_w):
+                if event.key in (pygame.K_w, pygame.K_s):
                     self.player.speed = 0
         return False
 
