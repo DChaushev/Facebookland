@@ -5,6 +5,7 @@ Game we did for HackFMI's 0100'th edition. <br>
 <br>
 The game is top view 2D shooter.<br>
 The difference from the other shooters is the idea that it uses your facebook friend list to generate unique levels(background, movement speeds, number of enemies, damage you deal and ect.).<br>
+The name comes from facebook + crimsonland (http://www.crimsonland.com/).
 
 Controls:<br>
 W - forward<br>
