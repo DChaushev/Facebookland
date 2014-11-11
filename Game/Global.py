@@ -31,7 +31,7 @@ for bg in Background:
 #use single instance of Texture Holder
 textureHolder = TextureHolder()
 
-MUSIC = 'Game/Resources/08-black_eyed_peas-dont_stop_the_party.mp3'
+MUSIC = 'Game/Resources/Sounds/theme.mp3'
 
 for texture in Texture:
     if not texture == Texture.BACKGROUND:

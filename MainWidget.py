@@ -64,6 +64,9 @@ class MainWidget( QWidget ):
         subLayout.addLayout( formLayout, 1 )
 
         mainLayout.addLayout( subLayout )
+        # DO NOT REMOVE COPYRIGHT INFORMATION! Licensed under CC BY SA
+        mainLayout.addWidget(QLabel("Theme song: 'Free Software Song 2' by Jono Bacon CC BY SA"))
+
         self.setLayout( mainLayout )
 
     def resetPeoplesWidget(self, aPeople ):

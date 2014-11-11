@@ -40,8 +40,9 @@ class Game:
         arena = pygame.Surface((ARENA_WIDTH, ARENA_HEIGHT), pygame.DOUBLEBUF | pygame.HWSURFACE)
         clock = pygame.time.Clock()
         
-        # pygame.mixer.music.load(MUSIC)
-        # pygame.mixer.music.play()
+        pygame.mixer.music.load(MUSIC)
+        pygame.mixer.music.play()
+
         seconds = (700 + 100 * (self.level_options.enemiesCount - 1)) / (self.player.damage * 4) * 1000
         print(seconds)
         scoreIncrementTimer = 0
