@@ -15,11 +15,12 @@ class Person:
         return self.name
 
 class Level:
-    def __init__(self, data ):
+    def __init__(self, name, data ):
         cities =  [ "Dungeon", "Castle", "Rampart", "Conflux" ]
+        self.person_name = name
         self.city = cities[ int( data[ 0 ] ) % len( cities ) ]
         self.enemiesDifficulty = int( data[ 1 ] ) % 5
-        self.enemiesCount =  int(int( data[ 2 ] ) * 3 / 2)
+        self.enemiesCount =  len(name.split(" ")[0]) + 1
         self.playerSpeed = int( data[3])
         self.enemySpeed = int ( data[4] )
         self.damage = int ( data[5] ) * 4

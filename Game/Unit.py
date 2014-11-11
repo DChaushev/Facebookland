@@ -14,6 +14,7 @@ class Unit(Entity):
         self.default_speed = 1
         self.speed = 1
         self.health = 100
+        self.original_health = self.health
         self.direction = Vector2(0,0)
         self.animation_count = 0
         self.animation_count_max = 30
@@ -31,8 +32,13 @@ class Unit(Entity):
         self.last_vector = self.direction
         self.direction = dir
 
+    def set_health(self, h):
+        self.health = h
+        self.original_health = h
+
     def reduce_health(self, dmg):
         self.health -= dmg
+        print(self.health)
 
     def get_orientation(self):
         if self.direction == Vector2(0, 0):
@@ -84,7 +90,7 @@ class Unit(Entity):
                screen.blit(transform.rotate(self.idle_animation, angle), self.pos)
 
         if self.health_bar and len(self.walk) > 0:
-            health = (self.health * self.walk[0].get_width())/100
+            health = (self.health * self.walk[0].get_width())/self.original_health
             if health < 0:
                 health = 0
             health_bar = Rect(self.pos.x, self.pos.y, health, -5)

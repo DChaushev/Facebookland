@@ -44,6 +44,7 @@ class MainWidget( QWidget ):
         self.enemySpeedLabel      = QLabel()
         self.playerDamage         = QLabel()
         self.backgroundTexture    = QLabel()
+        self.person_name          = ""
 
         self.logWithFacebookButton = QPushButton( "Log With Facebook ")
         self.logWithFacebookButton.clicked.connect( self.onLogButtonClicked)
@@ -80,7 +81,7 @@ class MainWidget( QWidget ):
         row = self.peopleView.row( item )
         self.selectedPerson = self.people[ row ]
         print ( "{0} is selected".format( self.selectedPerson.name ) )
-        self.levelOptions = Common.Level( self.selectedPerson.data )
+        self.levelOptions = Common.Level( self.selectedPerson.name, self.selectedPerson.data )
         self.updateFormFromSelectedUser()
         self.launchButton.setEnabled(True)
 
