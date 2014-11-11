@@ -1,9 +1,8 @@
-__author__ = 'Yani Maltsev'
-
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 540
 ARENA_WIDTH = 1500
 ARENA_HEIGHT = 1000
+#ZOOM = 1
 BG_COLOR = 150, 150, 80
 
 import pygame
@@ -15,7 +14,7 @@ from Game.Unit import Unit
 from Game.Enemy import Enemy
 from Game.Entity import Entity
 from random import randint, choice
-from pygame import math
+from pygame import math, transform
 
 
 class Game:
@@ -23,16 +22,67 @@ class Game:
         self.level_options = level_options
         self.view_x = (ARENA_WIDTH - SCREEN_WIDTH) / 2
         self.view_y = (ARENA_HEIGHT - SCREEN_HEIGHT) / 2
-        self.player = Player( self.view_x + SCREEN_WIDTH / 2, self.view_y + SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER  )
+        self.player = Player( self.view_x + SCREEN_WIDTH/2, self.view_y + SCREEN_HEIGHT/2, textureHolder, Texture.PLAYER )
         self.monsters = [Enemy( 0, 0, textureHolder, Texture.ZOMBIE)]
         self.projectiles = []
-        self.moonwalk = False;
-        self.shoot = False;
+        self.moonwalk = False
+        self.shoot = False
         #self.tree = Unit()
         self.air = []
         #self.environment = []
-
         self.generate_level()
+
+    def run(self):
+        pygame.init()
+        pygame.key.set_repeat(25, 25)
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF | pygame.HWSURFACE,)
+        arena = pygame.Surface((ARENA_WIDTH, ARENA_HEIGHT), pygame.DOUBLEBUF | pygame.HWSURFACE)
+        clock = pygame.time.Clock()
+        #diagonal = False
+        #diag_holdon = 0
+        #diag_multi = math.Vector2(0, 0)
+
+        while True:
+            # Limit frame speed to 50 FPS
+            time_passed = clock.tick(50)
+
+            # Redraw the background
+            arena.fill(BG_COLOR)
+            textureHolder.load(self.level_options.enumTexture, self.level_options.enumTexture.value)
+            bg = textureHolder.get(self.level_options.enumTexture)
+
+            self.background_render(bg, arena)
+
+            if self.handle_user_input():
+                return
+
+            # Update and redraw all creeps
+            self.player.update()
+            self.player.render(arena)
+
+            if len(self.monsters) > 0:
+                self.handle_monsters(arena)
+            else: #TODO: win after killing all 3 waves of zombies
+                self.game_over(screen, "You Win")
+                return
+
+            if self.player.health < 0:
+                self.game_over(screen, "Game Over")
+                return
+
+            for bullet in self.projectiles:
+                self.handle_bullet(bullet, arena)
+                #print(len(self.projectiles))
+
+            self.update_view_coordinates()
+
+            for cloud in self.air:
+                cloud.update()
+                cloud.render(arena)
+
+            #Draw the view on the screen
+            screen.blit(arena, (0, 0), pygame.Rect(self.view_x, self.view_y, SCREEN_WIDTH, SCREEN_HEIGHT))
+            pygame.display.flip()
 
     def generate_level(self):
         for i in range(self.level_options.enemiesCount):
@@ -56,7 +106,6 @@ class Game:
         self.player.set_speed(self.level_options.playerSpeed)
         self.player.set_damage(self.level_options.damage)
 
-
     def exit(self):
         #self.exitGame = True
         pygame.quit()
@@ -64,7 +113,7 @@ class Game:
     def background_render(self, bg, screen):
         x = 0
         while x < ARENA_WIDTH:
-            y=0
+            y = 0
             while y < ARENA_HEIGHT:
                 screen.blit(bg, (x, y))
                 y += bg.get_height()
@@ -73,11 +122,11 @@ class Game:
     def collision_detection(self, surface_1, surface_2):
         if len(surface_2.walk) > 0 and len(surface_1.walk) > 0:
             rect1 = pygame.Rect(surface_1.pos.x, surface_1.pos.y, surface_1.walk[0].get_width(), surface_1.walk[0].get_height())
+            #TODO: check this walks arrays
             rect2 = pygame.Rect(surface_2.pos.x, surface_2.pos.y, surface_2.texture.get_width(), surface_2.walk[0].get_width())
             if rect1.colliderect(rect2):
                 return True
         else: return False
-
 
     def game_over(self, screen, text):
         font1 = pygame.font.Font(None, 140)
@@ -146,64 +195,6 @@ class Game:
             if monster.health <= 0:
                 if monster in self.monsters:
                     self.monsters.remove(monster)
-
-
-    def run(self):
-        pygame.init()
-        pygame.key.set_repeat(25, 25)
-        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF,)
-        arena = pygame.Surface((ARENA_WIDTH, ARENA_HEIGHT), pygame.HWSURFACE)
-        clock = pygame.time.Clock()
-        #diagonal = False
-        #diag_holdon = 0
-        #diag_multi = math.Vector2(0, 0)
-
-        while True:
-            # Limit frame speed to 50 FPS
-            time_passed = clock.tick(50)
-
-            # Redraw the background
-            arena.fill(BG_COLOR)
-            textureHolder.load(self.level_options.enumTexture, self.level_options.enumTexture.value)
-            bg = textureHolder.get(self.level_options.enumTexture)
-
-            self.background_render(bg, arena)
-
-            if self.handle_user_input():
-                return
-
-            # Update and redraw all creeps
-            self.player.update()
-            self.player.render(arena)
-
-            if len(self.monsters) > 0:
-                self.handle_monsters(arena)
-            else: #TODO: win after killing all 3 waves of zombies
-                self.game_over(screen, "You Win")
-                return
-
-            if self.player.health < 0:
-                self.game_over(screen, "Game Over")
-                return
-
-            for bullet in self.projectiles:
-                self.handle_bullet(bullet, arena)
-                #print(len(self.projectiles))
-
-            self.update_view_coordinates()
-
-            for cloud in self.air:
-                cloud.update()
-                cloud.render(arena)
-
-            #Draw the view on the screen
-            screen.blit(arena, (0, 0), pygame.Rect(self.view_x, self.view_y, SCREEN_WIDTH, SCREEN_HEIGHT))
-
-
-
-            pygame.display.flip()
-
-
 
     def handle_user_input(self):
         for event in pygame.event.get():
