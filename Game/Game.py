@@ -107,7 +107,7 @@ class Game:
         spawn_y = choice([uy, dy])
         
         return  spawn_x, spawn_y
-
+   
     def gen_monsters(self):
         for i in range(self.level_options.enemiesCount - 1):
             spawn_x, spawn_y = self.random_coords()
@@ -182,6 +182,7 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         self.exit()
                         return
+
             pygame.display.update()
 
     def get_min(self, collisions):
