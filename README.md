@@ -7,6 +7,10 @@ The game is top view 2D shooter.<br>
 The difference from the other shooters is the idea that it uses your facebook friend list to generate unique levels(background, movement speeds, number of enemies, damage you deal and ect.).<br>
 The name comes from facebook + crimsonland (http://www.crimsonland.com/).
 
+![Menu](/screenshots/menu.jpg?raw=true  "Menu")
+<br> <br>
+![Game](/screenshots/game.jpg?raw=true  "Game")
+
 Controls:<br>
 W - forward<br>
 S - flip backwords<br>
